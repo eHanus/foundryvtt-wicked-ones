@@ -3,9 +3,11 @@
 # Wicked Ones Game System for Foundry
 ### For questions or reporting bugs contact us on Discord: `eiktopus` or `LorduFreeman#8747`.
 
-Link to the [Wicked Ones home page](<https://banditcamp.io/wickedones/> "Wicked Ones – Bandit Camp")
+Since the original Wicked Ones site has been discontinued you can currently obtain the game at these sites:
+- An unaffiliated page on itch.io (https://boxman214.itch.io/wicked-ones-ttrpg)
+- A GitHub repository holding the files of the original Wicked Ones title now under CC0 (https://github.com/chuckdee68/WickedOnes).
 
-Based on the great Blades in the Dark system by `megastruktur`.
+Based on the great Blades in the Dark FoundryVTT system by `megastruktur`.
 
 #### Scroll down for pretty pictures, yeeeees.
 ## Install

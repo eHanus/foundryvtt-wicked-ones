@@ -158,6 +158,21 @@
     "Invasions": "Invasions",
     "MajorInvasions": "Major Invasions",
     "For": "for",
+    "ClockColors": {
+      "Transparent": "Transparent",
+      "Red": "Red",
+      "Blue": "Blue",
+      "Green": "Green",
+      "Yellow": "Yellow"
+    },
+    "NewEdge": "New Edge",
+    "Traits": "Traits",
+    "Class": "Class",
+    "Hearts": "Hearts",
+    "Moves": "Moves",
+    "Passive": "Passive",
+    "Heart": "Heart",
+    "Move": "Move",
 
     "TOOLTIP": {
       "Reset": "Reset",
@@ -207,6 +222,7 @@
 
     "PosEffEqual": "Equal Footing",
     "RollSomeDice": "Dice Roller",
+    "RollDice": "Dice Roll",
     "RollTokenDescription": "Choose your Roll type and how many dice to roll:",
     "RollNumberOfDice": "Number of Dice",
 

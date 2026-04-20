@@ -296,7 +296,7 @@ Hooks.on("deleteItem", (item, options, userId) => {
 
 // renderSceneControls
 Hooks.on("renderSceneControls", async (app, html) => {
-  let dice_roller = $('<li class="scene-control" title="Dice Roll"><i class="fas fa-dice"></i></li>');
+  let dice_roller = $('<li class="scene-control" title="' + game.i18n.localize("FITD.TOOLTIP.RollDice") + '"><i class="fas fa-dice"></i></li>');
   dice_roller.click(function() {
     simpleRollPopup();
   });

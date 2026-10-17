@@ -1,4 +1,5 @@
 {
+    "id": "wicked-ones",
   "title": "Wicked Ones",
   "description": "Official system for the Wicked Ones game made by Bandit Camp. Including official compendium content, all you need to slay some adventurers!",
   "version": "WILL BE AUTO REPLACED",
@@ -347,9 +348,8 @@
       "flags": {}
     }
   ],
-  "id": "wicked-ones",
   "compatibility": {
-    "minimum": "11",
-    "verified": "12.328"
+        "minimum": "13",
+        "verified": "14"
   }
 }

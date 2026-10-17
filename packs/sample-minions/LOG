@@ -1,5 +1,3 @@
-2026/10/18-00:25:45.378 af20 Recovering log #3
-2026/10/18-00:25:45.378 af20 Level-0 table #5: started
-2026/10/18-00:25:45.386 af20 Level-0 table #5: 12704 bytes OK
-2026/10/18-00:25:45.412 af20 Delete type=0 #3
-2026/10/18-00:25:45.413 af20 Delete type=3 #2
+2026/10/18-00:56:08.745 ea64 Recovering log #8
+2026/10/18-00:56:08.765 ea64 Delete type=0 #8
+2026/10/18-00:56:08.766 ea64 Delete type=3 #7

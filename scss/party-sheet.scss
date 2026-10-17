@@ -88,13 +88,6 @@ form.party-sheet {
     td.moves-radio {
         div {
             @include custom_radio(24px, 24px);
-
-            label.rollable-text {
-                background-image: none !important;
-                text-align: center;
-                line-height: 1.5;
-                color: $blue;
-            }
         }
 
         &:hover > div.attributes-container label {

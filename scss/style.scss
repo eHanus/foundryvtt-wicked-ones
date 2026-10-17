@@ -23,54 +23,158 @@
  *   Layout Styles
  */
 
-.sheet {
-	min-width: min-content;
+.window-app.sheet {
+    min-width: min-content;
 }
 
- /* WO-Borders for windows and sheets*/
+/* WO-Borders for windows and sheets */
 .window-app .window-content {
-    background: url(../styles/assets/images/background-light.webp) repeat;
     color: $almost_black;
+    font-family: Bitter, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
     overflow-y: auto;
-	
-	background: url(../styles/assets/decorations/border-left.png), url(../styles/assets/decorations/border-right.png),url(../styles/assets/images/background-light.webp);
-	background-repeat: repeat-y, repeat-y, repeat;
-	background-size: 70px, 70px, 300px;
-	background-position: left, right, bottom;
 
+    background: url(../styles/assets/decorations/border-left.png), url(../styles/assets/decorations/border-right.png), url(../styles/assets/images/background-light.webp);
+    background-repeat: repeat-y, repeat-y, repeat;
+    background-size: 70px, 70px, 300px;
+    background-position: left, right, bottom;
 
     form.actor-sheet {
         z-index: 0;
         padding: 20px 12px;
     }
 }
- /* Overlay-Style for visibility for dialogs (else borders disrupt readability) */
+
+/* Overlay-Style for visibility for dialogs (else borders disrupt readability) */
 .dialog-content {
     background-color: #fffaf096;
     border-radius: 5px;
     box-shadow: 0 0 6px 7px #fffaf096;
 }
 
-section {
-    display: flex;
-    flex-direction: column;
+/*
+ * Zero-specificity scope wrapper (:where) so V12 internal sheet specificity is 100% preserved
+ * while preventing global tag rules from leaking into Foundry V14's core UI.
+ */
+:where(.window-app .window-content) {
 
-    > form:last-child {
-        margin-right: 0px;
+    section {
+        display: flex;
+        flex-direction: column;
+
+        > form:last-child {
+            margin-right: 0px;
+        }
+
+        .grow-one {
+            flex-grow: 1;
+        }
+
+        .grow-two {
+            flex-grow: 2;
+        }
     }
 
-    .grow-one {
-        flex-grow: 1;
+    nav {
+        margin-bottom: 10px;
     }
 
-    .grow-two {
-        flex-grow: 2;
+    // All Table Formatting:
+    table {
+        width: 100%;
+        border: none;
+        background: none;
+        margin: 0;
+
+        th {
+            &:hover {
+                .item-add-popup {
+                    transition: opacity 0.5s;
+                    opacity: 1;
+                }
+            }
+
+            .item-add-popup {
+                transition: opacity 0.5s;
+                opacity: $add-opacity;
+            }
+        }
+
+        tr,
+        tr:nth-child(even) {
+            background-color: initial;
+        }
+
+        td, th {
+            padding: 5px;
+            border: none;
+        }
+
+        td:first-child {
+            padding-left: 5px;
+        }
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: bold;
+    }
+
+    select {
+        font-family: Bitter, Lucida Console, monospace;
+        font-weight: 600;
+        font-size: 15px;
+        border-radius: 0px;
+        border: 1px solid $mud;
+        color: $almost_black;
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    option {
+        font-weight: 600;
+        color: $almost_black;
+        background: $paper;
+    }
+
+    input[type="text"], input[type="number"], input[type="password"],
+    input[type="date"], input[type="time"],   input[type="range"] {
+        font-weight: 600;
+        border: 1px solid $mud;
+        border-radius: 0;
+        width: 100%;
+        color: $almost_black;
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    textarea {
+        color: $bloody;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-family: Bitter;
+        font-weight: 600;
+        min-height: 80px;
+        resize: none;
+    }
+
+    form .notes, form .hint {
+        font-weight: 600;
+    }
+
+    form .form-group label {
+        font-weight: 700;
     }
 }
 
+/* Ensure inactive AppV1 tabs are hidden in Foundry V14 */
+.window-app .tab[data-tab]:not(.active) {
+    display: none !important;
+}
+
+/* Keep horizontal flex containers side-by-side without unintended wrapping */
 .flex-horizontal {
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: space-between;
 }
 
@@ -93,7 +197,6 @@ table.base-info {
             color: $mud;
         }
 
-        // TO DO: Make standard across sheets?
         .text-input {
             color: $mud;
 
@@ -110,15 +213,6 @@ table.base-info {
             }
         }
     }
-}
-
-
-/*
- *   Navigation Styles
- */
-
-nav {
-    margin-bottom: 10px;
 }
 
 // Nav container margin to attributes
@@ -144,7 +238,7 @@ nav {
 }
 
 // Highlight selected tab
-.tabs .item.active {
+.window-app .tabs .item.active {
     font-weight: 700;
     color: $bloody;
     text-shadow: 2px 2px 7px $orange;
@@ -156,72 +250,14 @@ nav {
  */
 
 body {
-    font-family: Bitter, sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-	background: url("../styles/assets/images/WO-Background.webp");
+    background: url("../styles/assets/images/WO-Background.webp");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
 }
 
-
-// All Table Formatting:
-table {
-    width: 100.1%;
-
-    th {
-        &:hover {
-            .item-add-popup {
-                transition: opacity 0.5s;
-                opacity: 1;
-            }
-        }
-
-        .item-add-popup {
-            transition: opacity 0.5s;
-            opacity: $add-opacity;
-        }
-    }
-
-    tr:nth-child(even) {
-        background-color: initial;
-    }
-
-    td, th {
-        padding: 5px;
-    }
-
-    td:first-child {
-        padding-left: 5px;
-    }
-}
-
-h1, h2, h3, h4 {
-    font-weight: bold;
-}
-.item-checkmark{
-	font-weight: 700;
-}
-
-select {
-    font-family: Bitter, Lucida Console, monospace;
-    font-weight: 600;
-    font-size: 15px;
-    border-radius: 0px;
-    border: 1px solid $mud;
-}
-
-option {
-    font-weight: 600;
-}
-
-input[type="text"], input[type="number"], input[type="password"],
-input[type="date"], input[type="time"],   input[type="range"] {
-    font-weight: 600;
-    border: 1px solid $mud;
-    border-radius: 0;
-    width: 100%
+.item-checkmark {
+    font-weight: 700;
 }
 
 .text-input {
@@ -241,16 +277,6 @@ input[type="date"], input[type="time"],   input[type="range"] {
     }
 }
 
-textarea {
-    color: $bloody;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-family: Bitter;
-    font-weight: 600;
-    min-height: 80px;
-    resize: none;
-}
-
 .checkbox-container {
     display: flex;
     justify-content: start;
@@ -263,7 +289,7 @@ textarea {
 }
 
 .standard-checkbox {
-    display:flex;
+    display: flex;
     flex-direction: row;
     align-items: center;
     margin-top: 5px;
@@ -284,7 +310,7 @@ textarea {
 
 
 /*
- *   Button Styles
+ *   Button Styles (Scoped to AppV1 Windows & Dialogs)
  */
 
 %button-base {
@@ -309,26 +335,14 @@ textarea {
     }
 }
 
-// TO DO: Maybe move properties to base & use button as base
-button {
+:where(.window-app .window-content) button,
+.dialog .dialog-buttons button,
+.dialog .dialog-buttons button.default {
     @extend %button-base;
     font-family: Bitter, sans-serif;
     font-weight: 500;
     color: $bone;
     transition-duration: $transition-period;
-}
-
-.dialog .dialog-buttons button {
-    @extend %button-base;
-}
-
-// TO DO: Evaluate if needed
-* * form button {
-    @extend %button-base;
-}
-
-.dialog .dialog-buttons button.default {
-    @extend %button-base;
 }
 
 
@@ -392,7 +406,6 @@ button {
 
 .profile-img {
     border: none;
-    // background: url(../styles/assets/images/background-light.webp) repeat $bloodyShadow;
     background-blend-mode: color-burn;
     object-fit: cover;
 
@@ -456,7 +469,7 @@ label.clock-zero-label {
 
     .item-open-editor {
         cursor: pointer;
-        @include changeable($transition-period,$hover-brightness, $hover-opacity );
+        @include changeable($transition-period, $hover-brightness, $hover-opacity);
     }
 
     .item-description {
@@ -516,26 +529,26 @@ div.item, tr.item {
 
 /* WO Roll Popup Formatting of the Roll Options */
 .action-info {
-	padding: 5px;
-	margin-top: -10px;
-	line-height: 1.5em;
-	
-	#team-up{
-		line-height: 1.1em;
-	}
+    padding: 5px;
+    margin-top: -10px;
+    line-height: 1.5em;
+
+    #team-up {
+        line-height: 1.1em;
+    }
 }
 
-#pause h3 {
+#pause h3,
+#pause figcaption {
     font-weight: 600;
     text-shadow: 0px 3px 0px #68332c;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 // Highlight for elements triggering die rolls
-// TO DO: Maybe use changeable
 .rollable-text {
     transition: color $transition-period;
 
@@ -546,12 +559,11 @@ div.item, tr.item {
 }
 
 // Minimum Size for TinyMCE Editor Box
-// TO DO: Reduce size?
 .editor,
 .editor-content {
     min-height: 280px;
-    background: rgba(0,0,0,0.05);
-	padding: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 10px;
 }
 
 // Styling for opened compendia and directories
@@ -564,50 +576,43 @@ div.item, tr.item {
 }
 
 #pause img {
-    content:url("assets/decorations/pause-logo.webp")
+    content: url("assets/decorations/pause-logo.webp");
 }
-// Styling for menu entries like Game Settings
-form .notes, form .hint {
-    font-weight: 600;
-}
-form .form-group label {
-    font-weight: 700;
-}
- /* Global Tab Style Formatting */
 
-nav.tabs.flex-horizontal {
+/* Global Tab Style Formatting (Scoped to AppV1 sheets) */
+.window-app nav.tabs.flex-horizontal {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-	justify-content: space-between;
+    justify-content: space-between;
     margin: 0;
-	
-	& .item {
-		text-align: center;
-		color: black;
-		background-color:#8080803d;
-		line-height: 2rem;
-		border-top-left-radius: 3px;
-		border-top-right-radius: 3px;
-		margin: 0px 2px;
-		box-shadow: inset 0 2px 3px 0px $mud;
-		flex: auto;
-	}
 
-	& .item.active {
-		font-weight: 700;
-		color: white;
-		background-color: $mud;
-		box-shadow: none;
-	}
-	
-	& > :first-child {
-		margin-left: 0;
-	}
+    & .item {
+        text-align: center;
+        color: black;
+        background-color: #8080803d;
+        line-height: 2rem;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        margin: 0px 2px;
+        box-shadow: inset 0 2px 3px 0px $mud;
+        flex: auto;
+    }
 
-	& > :last-child {
-		margin-right: 0;
-	}
+    & .item.active {
+        font-weight: 700;
+        color: white;
+        background-color: $mud;
+        box-shadow: none;
+    }
+
+    & > :first-child {
+        margin-left: 0;
+    }
+
+    & > :last-child {
+        margin-right: 0;
+    }
 }
 
 
@@ -635,10 +640,10 @@ nav.tabs.flex-horizontal {
     text-shadow: none;
 
     &.show {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0.5s, opacity 0.5s;
-    transition-delay: 1s;
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0.5s, opacity 0.5s;
+        transition-delay: 1s;
 
         &.quick {
             transition: visibility 0.2s, opacity 0.2s;
@@ -646,5 +651,3 @@ nav.tabs.flex-horizontal {
         }
     }
 }
-
-

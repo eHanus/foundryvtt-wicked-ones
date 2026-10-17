@@ -3,7 +3,9 @@
 @import 'fonts.scss';
 @import 'mixin.scss';
 
-#chat {
+#chat,
+#chat-notifications,
+.chat-log {
 
     .chat-label {
         background-color: $almost_black;
@@ -42,11 +44,13 @@
                 font-family: Piedra;
                 font-weight: normal;
                 font-size: 15px;
+                color: $almost_black;
             }
 
             .message-metadata {
                 text-align: right;
                 font-weight: 700;
+                color: $almost_black;
             }
 
         }
@@ -55,6 +59,7 @@
             font-family: Bitter;
             font-size: inherit;
             font-weight: 600;
+            color: $almost_black;
         }
 
     }
@@ -81,7 +86,6 @@
         color: $almost_black;
         background-color: #bdb7ab;
         margin-bottom: 0px;
-        // display: flex;
         text-transform: capitalize;
         font-size: 16px;
     }
@@ -91,7 +95,7 @@
         &.dice-roll {
             display: block;
 
-            .dice-tooltip.exp{
+            .dice-tooltip.exp {
                 display: block;
             }
 
@@ -118,8 +122,6 @@
             margin: 0;
             margin-left: auto;
             border-top-left-radius: 5px;
-            flex: 1 1 min-content;
-            max-width: max-content;
         }
 
         .die {
@@ -190,7 +192,6 @@
         font-weight: 600;
     }
 
-    // TO DO: Check if used
     .dice-tooltip .dice-rolls .roll.d6 {
         font-family: Signika;
     }
@@ -205,8 +206,12 @@
 }
 
 
-// Game Chat Background
-#chat-form textarea {
+// Game Chat Background (Supports both legacy #chat-form and V13/V14 .chat-form)
+#chat-form textarea,
+.chat-form textarea#chat-message {
     background: url(../styles/assets/images/background-light.webp) repeat;
     background-size: 300px;
+    color: $almost_black;
+    font-family: Bitter, sans-serif;
+    font-weight: 600;
 }

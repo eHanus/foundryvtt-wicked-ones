@@ -1,3 +1,8 @@
+import { WickedHelpers } from "./wicked-helpers.js";
+
+const { Dialog } = foundry.appv1.api;
+const { renderTemplate } = foundry.applications.handlebars;
+
 /**
  * Roll Dice.
  * @param {int} dice_amount
@@ -15,12 +20,11 @@ export async function wickedRoll(dice_amount, attribute_name = "", position = "d
     dice_amount = 2;
   }
 
-  let r = new Roll( `${dice_amount}d6`, {} );
+  let r = new Roll(`${dice_amount}d6`, {});
 
   await r.evaluate();
 
-  return await await showChatRollMessage(r, zeromode, attribute_name, position, effect, type, char_name, dice3dDelay)
-
+  return await showChatRollMessage(r, zeromode, attribute_name, position, effect, type, char_name, dice3dDelay);
 }
 
 /**
@@ -34,22 +38,15 @@ export async function wickedRoll(dice_amount, attribute_name = "", position = "d
  * @param {string} type
  * @param {string} char_name
  */
-async function showChatRollMessage(r, zeromode, attribute_name = "", position = "", effect = "", type="", char_name="", dice3dDelay = false) {
+async function showChatRollMessage(r, zeromode, attribute_name = "", position = "", effect = "", type = "", char_name = "", dice3dDelay = false) {
 
   let speaker = ChatMessage.getSpeaker();
   if (speaker.alias == char_name) {
     char_name = "";
   }
-  let isBelow070 = foundry.utils.isNewerVersion('0.7.0', game.version ?? game.data.version);
-  let rolls = [];
-  let attribute_label = WickedHelpers.getAttributeLabel(attribute_name);
 
-  // Backward Compat for rolls.
-  if (isBelow070) {
-    rolls = (r.parts)[0].rolls;
-  } else {
-    rolls = (r.terms)[0].results;
-  }
+  let rolls = (r.terms)[0].results;
+  let attribute_label = WickedHelpers.getAttributeLabel(attribute_name);
 
   // Retrieve Roll status.
   let roll_status = getWickedRollStatus(rolls, zeromode);
@@ -57,46 +54,46 @@ async function showChatRollMessage(r, zeromode, attribute_name = "", position = 
   // Check and log if Dice Configuration is Manual
   let method = {};
   method.type = (r.terms)[0].method;
-  if( method.type ) {
-    method.icon = CONFIG.Dice.fulfillment.methods[method.type].icon;
-    method.label = CONFIG.Dice.fulfillment.methods[method.type].label;
+  if (method.type) {
+    method.icon = CONFIG.Dice.fulfillment.methods[method.type]?.icon;
+    method.label = CONFIG.Dice.fulfillment.methods[method.type]?.label;
   }
 
   let position_localize = '';
   switch (position) {
     case 'dominant':
-      position_localize = 'FITD.PositionDominant'
+      position_localize = 'FITD.PositionDominant';
       break;
     case 'dire':
-      position_localize = 'FITD.PositionDire'
+      position_localize = 'FITD.PositionDire';
       break;
-	case 'deadly':
-      position_localize = 'FITD.PositionDeadly'
+    case 'deadly':
+      position_localize = 'FITD.PositionDeadly';
       break;
     case 'default':
     default:
-      position_localize = 'FITD.PositionDefault'
+      position_localize = 'FITD.PositionDefault';
   }
 
   let effect_localize = '';
   switch (effect) {
     case 'weak':
-      effect_localize = 'FITD.EffectWeak'
+      effect_localize = 'FITD.EffectWeak';
       break;
     case 'strong':
-      effect_localize = 'FITD.EffectStrong'
+      effect_localize = 'FITD.EffectStrong';
       break;
     case 'zero':
-      effect_localize = 'FITD.EffectZero'
+      effect_localize = 'FITD.EffectZero';
       break;
     case 'default':
     default:
-      effect_localize = 'FITD.EffectDefault'
+      effect_localize = 'FITD.EffectDefault';
   }
 
   let roll_type = game.i18n.localize('FITD.ROLL.' + type.toUpperCase() + '.Name');
   let roll_status_text = game.i18n.localize('FITD.ROLL.' + roll_status.capitalize());
-  let roll_description = game.i18n.localize('FITD.ROLL.' + type.toUpperCase() + '.' + roll_status.capitalize() );
+  let roll_description = game.i18n.localize('FITD.ROLL.' + type.toUpperCase() + '.' + roll_status.capitalize());
 
   // Append special description information
   if (type == 'creature') {
@@ -109,11 +106,11 @@ async function showChatRollMessage(r, zeromode, attribute_name = "", position = 
       if (roll_status == "critical") {
         roll_description += ' ' + game.i18n.localize('FITD.ROLL.' + type.toUpperCase() + '.' + roll_status.capitalize());
       }
-      roll_description += '<ul>'
+      roll_description += '<ul>';
       for (var i = 0; i < rolls.length; i++) {
         roll_description += '<li>' + game.i18n.localize('FITD.ROLL.' + type.toUpperCase() + '.' + getWickedRollStatus([rolls[i]], false).capitalize()) + '</li>';
       }
-      roll_description += '</ul>'
+      roll_description += '</ul>';
     }
     roll_description += '<p>' + game.i18n.localize('FITD.ROLL.LOOT.Note') + '</p>';
   } else if (type == 'resistance' && position == 'deadly') {
@@ -122,27 +119,27 @@ async function showChatRollMessage(r, zeromode, attribute_name = "", position = 
     }
   }
 
-  let result = await renderTemplate("systems/wicked-ones/templates/wicked-roll.html", { rolls: rolls, method: method, roll_type: roll_type, roll_status_class: roll_status, roll_status_text: roll_status_text, attribute_label: attribute_label, position: position_localize, effect: effect_localize, roll_description: roll_description, zeromode: zeromode, char_name: char_name });
+  let result = await renderTemplate("systems/wicked-ones/templates/wicked-roll.html", {
+    rolls: rolls,
+    method: method,
+    roll_type: roll_type,
+    roll_status_class: roll_status,
+    roll_status_text: roll_status_text,
+    attribute_label: attribute_label,
+    position: position_localize,
+    effect: effect_localize,
+    roll_description: roll_description,
+    zeromode: zeromode,
+    char_name: char_name
+  });
 
-  let messageData;
-if (game.version >= 12) {
-	messageData = {
-		user: game.user.id,
-		speaker: speaker,
-		content: result,
-		sound: CONFIG.sounds.dice,
-		rolls: [r]
-		}
-	} else {
-		messageData = {
-			user: game.user.id,
-			speaker: speaker,
-			content: result,
-			type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-			sound: CONFIG.sounds.dice,
-			rolls: [r]
-		}
-	}
+  let messageData = {
+    user: game.user.id,
+    speaker: speaker,
+    content: result,
+    sound: CONFIG.sounds.dice,
+    rolls: [r]
+  };
 
   // Prepare message options
   const rMode = game.settings.get("core", "rollMode");
@@ -151,11 +148,11 @@ if (game.version >= 12) {
   }
   const messageOptions = { rollMode: rMode };
 
-  if (game.dice3d && dice3dDelay){
+  if (game.dice3d && dice3dDelay) {
     await game.dice3d.showForRoll(r);
   }
-  let chat = await CONFIG.ChatMessage.documentClass.create(messageData, messageOptions)
-  return {roll: r, result: roll_status, chat: chat}
+  let chat = await CONFIG.ChatMessage.documentClass.create(messageData, messageOptions);
+  return { roll: r, result: roll_status, chat: chat };
 }
 
 /**
@@ -169,18 +166,10 @@ if (game.version >= 12) {
  */
 export function getWickedRollStatus(rolls, zeromode = false) {
 
-  // Dice API has changed in 0.7.0 so need to keep that in mind.
-  let isBelow070 = foundry.utils.isNewerVersion('0.7.0', game.version ?? game.data.version);
-
-  let sorted_rolls; //= [];
   // Sort roll values from lowest to highest.
-  if (isBelow070) {
-    sorted_rolls = rolls.map(i => i.roll).sort();
-  } else {
-    sorted_rolls = rolls.map(i => i.result).sort();
-  }
+  let sorted_rolls = rolls.map(i => i.result).sort((a, b) => a - b);
 
-  let roll_status = "failure"
+  let roll_status = "failure";
 
   if (sorted_rolls[0] === 6 && zeromode) {
     roll_status = "success";
@@ -196,7 +185,7 @@ export function getWickedRollStatus(rolls, zeromode = false) {
       use_die = sorted_rolls[sorted_rolls.length - 1];
 
       if (sorted_rolls.length - 2 >= 0) {
-        prev_use_die = sorted_rolls[sorted_rolls.length - 2]
+        prev_use_die = sorted_rolls[sorted_rolls.length - 2];
       }
     }
 
@@ -219,11 +208,9 @@ export function getWickedRollStatus(rolls, zeromode = false) {
     else {
       roll_status = "mixed";
     }
-
   }
 
   return roll_status;
-
 }
 
 
@@ -238,23 +225,23 @@ export async function simpleRollPopup() {
       <h2>${game.i18n.localize("FITD.RollSomeDice")}</h2>
       <p>${game.i18n.localize("FITD.RollTokenDescription")}</p>
       <form id="dice-roller">
-		<div class="form-group">
-		<label>${game.i18n.localize('FITD.RollType')}:</label>
-		<select id="type" name="type">
-		  <option value="fortune" selected>${game.i18n.localize('FITD.ROLL.FORTUNE.Name')}</option>
-		  <option value="blowback">${game.i18n.localize('FITD.ROLL.BLOWBACK.Name')}</option>
-		  <option value="calamity">${game.i18n.localize('FITD.ROLL.CALAMITY.Name')}</option>
-		  <option value="defensive">${game.i18n.localize('FITD.ROLL.DEFENSIVE.Name')}</option>
-		  <option value="discovery">${game.i18n.localize('FITD.ROLL.DISCOVERY.Name')}</option>
-		  <option value="engagement">${game.i18n.localize('FITD.ROLL.ENGAGEMENT.Name')}</option>
-		  <option value="lock">${game.i18n.localize('FITD.ROLL.LOCK.Name')}</option>
-		  <option value="loot">${game.i18n.localize('FITD.ROLL.LOOT.Name')}</option>
-		  <option value="creature">${game.i18n.localize('FITD.ROLL.CREATURE.Name')}</option>
-		  <option value="trap">${game.i18n.localize('FITD.ROLL.TRAP.Name')}</option>
-		  <option value="starting">${game.i18n.localize('FITD.ROLL.STARTING.Name')}</option>
-		  <option value="pathing">${game.i18n.localize('FITD.ROLL.PATHING.Name')}</option>
-		</select>
-	  </div>
+        <div class="form-group">
+          <label>${game.i18n.localize('FITD.RollType')}:</label>
+          <select id="type" name="type">
+            <option value="fortune" selected>${game.i18n.localize('FITD.ROLL.FORTUNE.Name')}</option>
+            <option value="blowback">${game.i18n.localize('FITD.ROLL.BLOWBACK.Name')}</option>
+            <option value="calamity">${game.i18n.localize('FITD.ROLL.CALAMITY.Name')}</option>
+            <option value="defensive">${game.i18n.localize('FITD.ROLL.DEFENSIVE.Name')}</option>
+            <option value="discovery">${game.i18n.localize('FITD.ROLL.DISCOVERY.Name')}</option>
+            <option value="engagement">${game.i18n.localize('FITD.ROLL.ENGAGEMENT.Name')}</option>
+            <option value="lock">${game.i18n.localize('FITD.ROLL.LOCK.Name')}</option>
+            <option value="loot">${game.i18n.localize('FITD.ROLL.LOOT.Name')}</option>
+            <option value="creature">${game.i18n.localize('FITD.ROLL.CREATURE.Name')}</option>
+            <option value="trap">${game.i18n.localize('FITD.ROLL.TRAP.Name')}</option>
+            <option value="starting">${game.i18n.localize('FITD.ROLL.STARTING.Name')}</option>
+            <option value="pathing">${game.i18n.localize('FITD.ROLL.PATHING.Name')}</option>
+          </select>
+        </div>
         <div class="form-group">
           <label>${game.i18n.localize("FITD.RollNumberOfDice")}:</label>
           <select id="qty" name="qty">
@@ -269,7 +256,7 @@ export async function simpleRollPopup() {
         label: `Roll`,
         callback: (html) => {
           let diceQty = html.find('[name="qty"]')[0].value;
-		  let type = html.find('[name="type"]')[0].value;
+          let type = html.find('[name="type"]')[0].value;
           wickedRoll(diceQty, "", "default", "default", type);
         },
       },

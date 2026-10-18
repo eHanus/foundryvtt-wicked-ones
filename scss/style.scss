@@ -558,9 +558,9 @@ div.item, tr.item {
     }
 }
 
-// Minimum Size for TinyMCE Editor Box
-.editor,
-.editor-content {
+// Minimum Size for Sheet Editor Box (Scoped to AppV1 sheets so it doesn't inflate V14's chat input)
+.window-app .editor,
+.window-app .editor-content {
     min-height: 280px;
     background: rgba(0, 0, 0, 0.05);
     padding: 10px;

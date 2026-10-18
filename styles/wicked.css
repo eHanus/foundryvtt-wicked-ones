@@ -5173,8 +5173,8 @@ div.item i.fa-trash, tr.item i.fa-trash {
   color: #a20000;
 }
 
-.editor,
-.editor-content {
+.window-app .editor,
+.window-app .editor-content {
   min-height: 280px;
   background: rgba(0, 0, 0, 0.05);
   padding: 10px;

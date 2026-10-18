@@ -1,6 +1,8 @@
 import { wickedRoll } from "./wicked-roll.js";
 import { WickedHelpers } from "./wicked-helpers.js";
 
+const { Dialog } = foundry.appv1.api;
+
 /**
  * Extend the basic Actor
  * @extends {Actor}
@@ -8,11 +10,11 @@ import { WickedHelpers } from "./wicked-helpers.js";
 export class WickedActor extends Actor {
 
   /**
-  * Create a new entity using provided input data
-  * @override
-  */
+   * Create a new entity using provided input data
+   * @override
+   */
   static async create(data, options = {}) {
-    if (Object.keys(data).includes("type")) {
+    if (data && typeof data === "object" && !Array.isArray(data) && Object.keys(data).includes("type")) {
 
       if (!(Object.keys(data).includes("prototypeToken"))) {
         data.prototypeToken = {};
@@ -52,7 +54,7 @@ export class WickedActor extends Actor {
         );
       }
     }
-    await super.create(data, options);
+    return await super.create(data, options);
   }
 
   /* -------------------------------------------- */
@@ -73,12 +75,12 @@ export class WickedActor extends Actor {
   }
 
 
-/* -------------------------------------------- */
+  /* -------------------------------------------- */
 
 
   /**
-  * Prepare Wicked One data
-  */
+   * Prepare Wicked One data
+   */
   _prepareWickedOneData() {
     const data = this.system;
     const items = this.items.contents;
@@ -108,7 +110,7 @@ export class WickedActor extends Actor {
           if (items[i].system.source != data.primal_monster_type) {
             items[i].system.flex_slot = true;
           } else {
-            items[i].flex_slot = false;
+            items[i].system.flex_slot = false;
           }
         } else if (items[i].system.source != data.calling_name) {
           items[i].system.flex_slot = true;
@@ -127,8 +129,8 @@ export class WickedActor extends Actor {
   /* -------------------------------------------- */
 
   /**
-  * Prepare Dungeon data
-  */
+   * Prepare Dungeon data
+   */
   _prepareDungeonData() {
     const data = this.system;
     const items = this.items.contents;
@@ -222,23 +224,21 @@ export class WickedActor extends Actor {
   /* -------------------------------------------- */
 
   /*
-  * Calculate Attribute Default Bonus Dice to throw.
-  */
+   * Calculate Attribute Default Bonus Dice to throw.
+   */
   getAttributeDefaultBonus() {
 
     // Calculate Dice to throw.
     let dice_amount = {};
 
     // Add extra values for braineater disciplines and doomseeker eye rays if available
-    // this.data.items.forEach(specialAbility => {
     this.items.forEach(specialAbility => {
       if (specialAbility.type == "specialability" && specialAbility.system.ability_type == "ds_eyes") {
         for (var i = 1; i < 10; i++) {
           dice_amount[specialAbility.system.primal['ds_eye_ray_' + i]] = this.system.attributes["guts"].shocked ? -1 : 0;
         }
       } else if (specialAbility.type == "specialability" && specialAbility.system.ability_type == "be_psi") {
-        dice_amount[specialAbility.system.primal.be_psi_skill_name] = dice_amount[specialAbility.system.primal['ds_eye_ray_' + i]] = this.system.attributes["guts"].shocked ? -1 : 0;
-
+        dice_amount[specialAbility.system.primal.be_psi_skill_name] = this.system.attributes["guts"].shocked ? -1 : 0;
       }
     });
 
@@ -273,7 +273,7 @@ export class WickedActor extends Actor {
 
     let options = {
       id: "dice-roll-popup",
-    }
+    };
 
     let typeOptions = "";
     let hideAction = "";
@@ -285,11 +285,11 @@ export class WickedActor extends Actor {
       `;
     } else {
       hideAction = " hidden";
-      typeOptions = `<option value="${roll_type}" selected>${game.i18n.localize('FITD.ROLL.' + roll_type.toUpperCase() + '.Name')}</option>`
+      typeOptions = `<option value="${roll_type}" selected>${game.i18n.localize('FITD.ROLL.' + roll_type.toUpperCase() + '.Name')}</option>`;
     }
 
     new Dialog({
-      title: `${game.i18n.localize('FITD.Roll')} ${game.i18n.localize(attribute_label)}`,
+      title: `${game.i18n.localize('FITD.Roll')}${game.i18n.localize(attribute_label)}`,
       content: `
         <div id="skill-roll">
           <h2>${game.i18n.localize('FITD.Roll')} ${game.i18n.localize(attribute_label)} (${dice_amount}D)</h2>
@@ -301,43 +301,43 @@ export class WickedActor extends Actor {
               </select>
             </div>
             <div class="form-group roll-type-action${hideAction}">
-				      <label>${game.i18n.localize('FITD.Position')}:</label>
-				      <select id="pos" name="pos">
-				        <option value="dominant">${game.i18n.localize('FITD.PositionDominant')}</option>
-				        <option value="default" selected>${game.i18n.localize('FITD.PositionDefault')}</option>
-				        <option value="dire">${game.i18n.localize('FITD.PositionDire')}</option>
-				        <option value="deadly">${game.i18n.localize('FITD.PositionDeadly')}</option>
-				      </select>
+              <label>${game.i18n.localize('FITD.Position')}:</label>
+              <select id="pos" name="pos">
+                <option value="dominant">${game.i18n.localize('FITD.PositionDominant')}</option>
+                <option value="default" selected>${game.i18n.localize('FITD.PositionDefault')}</option>
+                <option value="dire">${game.i18n.localize('FITD.PositionDire')}</option>
+                <option value="deadly">${game.i18n.localize('FITD.PositionDeadly')}</option>
+              </select>
             </div>
             <div class="form-group roll-type-resistance hidden">
-				      <label>${game.i18n.localize('FITD.DeadlyPosition')}:</label>
-				      <select id="deadly" name="deadly">
-				        <option value="default" selected>${game.i18n.localize('FITD.No')}</option>
-				        <option value="deadly">${game.i18n.localize('FITD.Yes')}</option>
-				      </select>
+              <label>${game.i18n.localize('FITD.DeadlyPosition')}:</label>
+              <select id="deadly" name="deadly">
+                <option value="default" selected>${game.i18n.localize('FITD.No')}</option>
+                <option value="deadly">${game.i18n.localize('FITD.Yes')}</option>
+              </select>
             </div>
             <div class="form-group roll-type-action${hideAction}">
-				      <label>${game.i18n.localize('FITD.Effect')}:</label>
-				      <select id="fx" name="fx">
-				        <option value="strong">${game.i18n.localize('FITD.EffectStrong')}</option>
-				        <option value="default" selected>${game.i18n.localize('FITD.EffectDefault')}</option>
-				        <option value="weak">${game.i18n.localize('FITD.EffectWeak')}</option>
-				        <option value="zero">${game.i18n.localize('FITD.EffectZero')}</option>
-				      </select>
-			      </div>
-		        <div class="form-group">
+              <label>${game.i18n.localize('FITD.Effect')}:</label>
+              <select id="fx" name="fx">
+                <option value="strong">${game.i18n.localize('FITD.EffectStrong')}</option>
+                <option value="default" selected>${game.i18n.localize('FITD.EffectDefault')}</option>
+                <option value="weak">${game.i18n.localize('FITD.EffectWeak')}</option>
+                <option value="zero">${game.i18n.localize('FITD.EffectZero')}</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label>${game.i18n.localize('FITD.Modifier')}:</label>
               <select id="mod" name="mod" data-base-dice="${dice_amount}">
                 ${this.createListOfDiceMods(-3, +3, default_bonus)}
               </select>
             </div>
-		        <div class="total-rolled form-group">
+            <div class="total-rolled form-group">
               <label class="total-rolled">${game.i18n.localize('FITD.TotalSkillDice')}: </label>
-			        <label>${dice_amount + default_bonus}D</label>
+              <label>${dice_amount + default_bonus}D</label>
             </div>
           </form>
-		      <h2 class="${hideAction}">${game.i18n.localize('FITD.RollOptions')}</h2>
-		      <div class="action-info${hideAction}">${game.i18n.localize('FITD.ActionsHelp')}</div>
+          <h2 class="${hideAction}">${game.i18n.localize('FITD.RollOptions')}</h2>
+          <div class="action-info${hideAction}">${game.i18n.localize('FITD.ActionsHelp')}</div>
         </div>
       `,
       buttons: {
@@ -366,11 +366,10 @@ export class WickedActor extends Actor {
       },
       default: "yes",
       render: html => {
-        $("#skill-roll #type").change(this._onRollTypeChange);
-        $("#skill-roll #mod").change(this._onDiceModChange);
+        html.find("#skill-roll #type").change(this._onRollTypeChange);
+        html.find("#skill-roll #mod").change(this._onDiceModChange);
       },
     }, options).render(true);
-
 
   }
 
@@ -390,7 +389,7 @@ export class WickedActor extends Actor {
 
     wickedRoll(dice_amount, attribute_name, position, effect, type, for_name ? for_name : this.name);
   }
-  
+
   rollBasicPopup(roll_type = "fortune", default_dice = 0, max_dice = 4) {
     new Dialog({
       title: `Dice Roller`,
@@ -398,12 +397,12 @@ export class WickedActor extends Actor {
         <h2>${game.i18n.localize("FITD.RollSomeDice")}</h2>
         <p>${game.i18n.localize("FITD.RollTokenDescription")}</p>
         <form id="dice-roller">
-      <div class="form-group">
-      <label>${game.i18n.localize('FITD.RollType')}:</label>
-      <select id="type" name="type">
-        <option value="${roll_type}" selected>${game.i18n.localize('FITD.ROLL.' + roll_type.toUpperCase() + '.Name')}</option>
-      </select>
-      </div>
+          <div class="form-group">
+            <label>${game.i18n.localize('FITD.RollType')}:</label>
+            <select id="type" name="type">
+              <option value="${roll_type}" selected>${game.i18n.localize('FITD.ROLL.' + roll_type.toUpperCase() + '.Name')}</option>
+            </select>
+          </div>
           <div class="form-group">
             <label>${game.i18n.localize("FITD.RollNumberOfDice")}:</label>
             <select id="qty" name="qty">
@@ -443,17 +442,18 @@ export class WickedActor extends Actor {
    */
   createListOfActions() {
 
-    let text, attribute, skill;
+    let text = "";
+    let attribute, skill;
     let attributes = this.system.attributes;
 
-    for ( attribute in attributes ) {
+    for (attribute in attributes) {
 
       var skills = attributes[attribute].skills;
 
       text += `<optgroup label="${attribute} Actions">`;
       text += `<option value="${attribute}">${attribute} (Resist)</option>`;
 
-      for ( skill in skills ) {
+      for (skill in skills) {
         text += `<option value="${skill}">${skill}</option>`;
       }
 
@@ -482,15 +482,15 @@ export class WickedActor extends Actor {
     var text = ``;
     var i = 0;
 
-    if ( s == "" ) {
+    if (s == "") {
       s = 0;
     }
 
-    for ( i  = rs; i <= re; i++ ) {
+    for (i = rs; i <= re; i++) {
       var plus = "";
-      if ( i >= 0 ) { plus = "+" };
+      if (i >= 0) { plus = "+"; }
       text += `<option value="${i}"`;
-      if ( i == s ) {
+      if (i == s) {
         text += ` selected`;
       }
 
@@ -534,5 +534,5 @@ export class WickedActor extends Actor {
     }
   }
 
-/* -------------------------------------------- */
+  /* -------------------------------------------- */
 }

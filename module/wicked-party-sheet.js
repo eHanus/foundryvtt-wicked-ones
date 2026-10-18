@@ -1,5 +1,7 @@
-
 import { WickedSheet } from "./wicked-sheet.js";
+import { WickedHelpers } from "./wicked-helpers.js";
+
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
 
 /**
  * @extends {WickedSheet}
@@ -7,10 +9,10 @@ import { WickedSheet } from "./wicked-sheet.js";
 export class WickedPartySheet extends WickedSheet {
 
   /** @override */
-	static get defaultOptions() {
-	  return foundry.utils.mergeObject(super.defaultOptions, {
-          classes: ["wicked-ones", "sheet", "actor"],
-          template: "systems/wicked-ones/templates/party-sheet.html",
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["wicked-ones", "sheet", "actor"],
+      template: "systems/wicked-ones/templates/party-sheet.html",
       width: 830,
       height: 620,
       tabs: []
@@ -25,14 +27,17 @@ export class WickedPartySheet extends WickedSheet {
     sheetData.editable = this.options.editable;
 
     sheetData.actor = sheetData.data;
-    sheetData.system = sheetData.document.system // project system data so that handlebars has the same name and value paths
-    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description, { async: true });
+    sheetData.system = sheetData.document.system; // project system data so that handlebars has the same name and value paths
+    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description ?? "", {
+      relativeTo: this.object,
+      secrets: this.object.isOwner
+    });
 
     // Override Code for updating the sheet goes here
     let max_tier = 0;
-    let adventurers = []
-    let hirelings = []
-    
+    let adventurers = [];
+    let hirelings = [];
+
     sheetData.items.forEach(e => {
       if (e.type == "adventurer" && e.system.adventurer_type == "adventurer") {
         if ((e.system.tier) > max_tier) {
@@ -48,7 +53,7 @@ export class WickedPartySheet extends WickedSheet {
         for (var i = 5; i > 0; i--) {
           if (i > max_tier + 1) {
             hearts[i] = "hidden";
-          } else if (i > e.system.tier + 1 ) {
+          } else if (i > e.system.tier + 1) {
             hearts[i] = "greyed";
           } else {
             // Distribute slashes
@@ -130,7 +135,7 @@ export class WickedPartySheet extends WickedSheet {
   /* -------------------------------------------- */
 
   /** @override */
-	activateListeners(html) {
+  activateListeners(html) {
     super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
@@ -140,7 +145,7 @@ export class WickedPartySheet extends WickedSheet {
     html.find('.item-open-editor').click(ev => {
       const element = $(ev.currentTarget).parents(".item");
       const item = this.document.items.get(element.data("itemId"));
-      item.sheet.render(true);
+      item?.sheet.render(true);
     });
 
     // Delete Inventory Item
@@ -162,13 +167,11 @@ export class WickedPartySheet extends WickedSheet {
 
   /* -------------------------------------------- */
   /*  Form Submission  (Check relevance)          */
-	/* -------------------------------------------- */
+  /* -------------------------------------------- */
 
   /** @override */
   async _updateObject(event, formData) {
-
-    // Update the Item
-    super._updateObject(event, formData);
+    return super._updateObject(event, formData);
   }
   /* -------------------------------------------- */
 

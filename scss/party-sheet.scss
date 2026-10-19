@@ -88,6 +88,22 @@ form.party-sheet {
     td.moves-radio {
         div {
             @include custom_radio(24px, 24px);
+            align-items: center;
+
+            label.fa-shield {
+                background-image: none !important;
+                width: auto;
+                height: auto;
+                font-size: 18px;
+                color: $blue;
+                margin-left: 6px;
+                display: inline-flex;
+                align-items: center;
+
+                &:hover {
+                    color: $highlight_red;
+                }
+            }
         }
 
         &:hover > div.attributes-container label {

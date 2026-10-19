@@ -616,9 +616,23 @@ div.item, tr.item {
 }
 
 
+
 /*
  *  Tooltip Styles
  */
+
+
+// Apply Wicked Ones parchment styling to Foundry's native tooltip when showing the Light Tongue grid (or system tooltips)
+#tooltip:has(#tongue-grid) {
+    max-width: 420px;
+    background: url(../styles/assets/images/background-light.webp) repeat;
+    color: $bloody;
+    border: 2px solid $bloody;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px $almost_black;
+}
+
 
 #wo-tooltip {
     visibility: hidden;

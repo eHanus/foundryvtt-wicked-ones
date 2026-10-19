@@ -2548,6 +2548,7 @@ form.party-sheet .adventurer-hearts label.hidden {
 form.party-sheet td.moves-radio div {
   display: flex;
   /* Hide the browser's default checkbox */
+  align-items: center;
 }
 form.party-sheet td.moves-radio div label {
   height: 24px;
@@ -2610,6 +2611,19 @@ form.party-sheet td.moves-radio div input:checked + label.practice-one {
 }
 form.party-sheet td.moves-radio div input:checked + label.practice-two {
   background-image: url("assets/boxes/box-crossed.png");
+}
+form.party-sheet td.moves-radio div label.fa-shield {
+  background-image: none !important;
+  width: auto;
+  height: auto;
+  font-size: 18px;
+  color: #04578f;
+  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+}
+form.party-sheet td.moves-radio div label.fa-shield:hover {
+  color: #a20000;
 }
 form.party-sheet td.moves-radio:hover > div.attributes-container label {
   transition: opacity 1s;
@@ -4139,8 +4153,9 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
   color: #EEEFFF;
   font-size: 24px;
   text-align: center;
-  padding: 0px 5px;
-  height: 36px !important;
+  padding: 2px 5px;
+  min-height: 36px;
+  height: auto !important;
   text-transform: capitalize;
 }
 #chat .chat-label-small,
@@ -4151,7 +4166,8 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
   font-size: small;
   text-align: center;
   padding: 3px 5px;
-  height: 26px !important;
+  min-height: 26px;
+  height: auto !important;
 }
 #chat .chat-message,
 #chat-notifications .chat-message,
@@ -4207,9 +4223,26 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
   color: white;
   background-color: #68332c;
   margin: 0;
+  padding: 3px 6px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 32px;
+  height: auto !important;
   border-top-left-radius: 5px;
   text-shadow: 2px 2px 0 #313131;
+}
+#chat .label-stripe-chat .black-label,
+#chat .label-stripe-chat .chat-label,
+#chat-notifications .label-stripe-chat .black-label,
+#chat-notifications .label-stripe-chat .chat-label,
+.chat-log .label-stripe-chat .black-label,
+.chat-log .label-stripe-chat .chat-label {
+  height: auto !important;
+  line-height: 1.15;
+  text-align: left;
+  padding: 2px 4px;
 }
 #chat .label-stripe-chat-small,
 #chat-notifications .label-stripe-chat-small,
@@ -4219,6 +4252,7 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
   margin-bottom: 0px;
   text-transform: capitalize;
   font-size: 16px;
+  height: auto !important;
 }
 #chat .wicked-die-tooltip.dice-roll,
 #chat-notifications .wicked-die-tooltip.dice-roll,
@@ -4235,6 +4269,8 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
 .chat-log .wicked-die-tooltip.dice-roll .dice-rolls {
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
 }
 #chat .wicked-die-tooltip.dice-roll .zero-hint,
 #chat-notifications .wicked-die-tooltip.dice-roll .zero-hint,
@@ -4250,11 +4286,16 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
   text-transform: uppercase;
   color: white;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: right;
   font-family: Bitter;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.15;
   margin: 0;
   margin-left: auto;
+  flex-shrink: 0;
   border-top-left-radius: 5px;
 }
 #chat .wicked-die-tooltip .die,
@@ -4266,7 +4307,9 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
   font-weight: normal;
   font-size: 24px;
   text-align: center;
-  height: 30px;
+  min-height: 30px;
+  height: auto;
+  padding: 2px 0;
   border-bottom: 3px solid;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -5227,6 +5270,16 @@ div.item i.fa-trash, tr.item i.fa-trash {
 /*
  *  Tooltip Styles
  */
+#tooltip:has(#tongue-grid) {
+  max-width: 420px;
+  background: url(../styles/assets/images/background-light.webp) repeat;
+  color: #400000;
+  border: 2px solid #400000;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px #191919;
+}
+
 #wo-tooltip {
   visibility: hidden;
   opacity: 0;

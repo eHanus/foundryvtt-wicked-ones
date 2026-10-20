@@ -11,8 +11,8 @@ export class WickedItem extends Item {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
-    if (data.type == "adventurer") {
-      if (data.system.adventurer_type == "hireling" && data.system.hireling_type == "") {
+    if (this.type == "adventurer") {
+      if (this.system?.adventurer_type == "hireling" && this.system?.hireling_type == "") {
         const hirelingType = this.getRandomHirelingType();
         const i18n = game.i18n.localize(hirelingType);
 
@@ -29,16 +29,15 @@ export class WickedItem extends Item {
 
   // Helper for random hireling types
   getRandomHirelingType() {
-    return Object.values(CONFIG.WO.hireling_types)[Math.floor(Math.random() * Object.values(CONFIG.WO.hireling_types).length)] ?? ""
-      ;
+    return Object.values(CONFIG.WO.hireling_types)[Math.floor(Math.random() * Object.values(CONFIG.WO.hireling_types).length)] ?? "";
   }
 
   /**
-    * Create a new entity using provided input data
-    * @override
-    */
+   * Create a new entity using provided input data
+   * @override
+   */
   static async create(data, options = {}) {
-    if (Object.keys(data).includes("type")) {
+    if (data && typeof data === "object" && !Array.isArray(data) && Object.keys(data).includes("type")) {
 
       // Replace default image
       let path = `systems/wicked-ones/styles/assets/icons/`;
@@ -108,14 +107,12 @@ export class WickedItem extends Item {
       }
 
     }
-    await super.create(data, options);
+    return await super.create(data, options);
   }
 
   /* override */
   prepareData() {
-
     super.prepareData();
-
     // Code to override data-preparation for items
   }
 
@@ -124,7 +121,6 @@ export class WickedItem extends Item {
     super.prepareDerivedData();
 
     if (this.type == "specialability") {
-      let a = 0;
       switch (this.system.ability_type) {
         case "ds_eyes":
           for (var j = 1; j < 10; j++) {
@@ -136,6 +132,5 @@ export class WickedItem extends Item {
       }
     }
   }
-
 
 }

@@ -1,94 +1,112 @@
 <p align="center"><img src="readme-images/WWfoundry.png"></img></p>
 
-# Wicked Ones Game System for Foundry
+# Wicked Ones Game System for Foundry VTT
 ### For questions or reporting bugs contact us on Discord: `eiktopus` or `LorduFreeman#8747`.
 
-Since the original Wicked Ones site has been discontinued you can currently obtain the game at these sites:
+> **Version 1.2.0 Update:** The system is now fully updated and verified for **Foundry VTT v14** (compatible with v13–v14) and includes automated world migration for existing v10–v12 campaigns, and an in-game **Interface & Sheet Guide** journal!
+
+Since the original Wicked Ones site has been discontinued, you can currently obtain the game at these sites:
 - An unaffiliated page on itch.io (https://boxman214.itch.io/wicked-ones-ttrpg)
 - A GitHub repository holding the files of the original Wicked Ones title now under CC0 (https://github.com/chuckdee68/WickedOnes).
 
 Based on the great Blades in the Dark FoundryVTT system by `megastruktur`.
 
 #### Scroll down for pretty pictures, yeeeees.
+
 ## Install
-### Using the manifest
-- Copy the following url: https://github.com/eHanus/foundryvtt-wicked-ones/releases/latest/download/system.json
-- Paste it into the Manifest URL field in the Install System dialog in your Foundry app.
+### Using the Manifest
+- Copy the following URL: `https://github.com/eHanus/foundryvtt-wicked-ones/releases/latest/download/system.json`
+- Paste it into the **Manifest URL** field in the Install System dialog in your Foundry app.
+
 ### Using Foundry System Browser
-Navigate to the Wicked Ones system and hit install!
-## Usage
-The module contains six "actor" types: Wicked Ones, Minion Packs, Dungeons, Factions, Adventuring Parties and finally Clocks, each with their own customized styled sheets.
+Navigate to the **Wicked Ones** system in the Foundry VTT Setup browser and hit install!
 
-Most parts of these sheets can be filled in by selecting and customizing "items". Those consist of: Adventurers, Callings, Defenses, Downtime Projects, Dungeon Duties, Rooms and Themes, Gear, Supply, Impulses, Monster Races, Revelries and more.
+---
 
-Most of the items and official content from the book can be found in the compendia, imported as usual and edited to entirely customize your game if you want to! No love for Strongholds? Just edit them until they fit your campaign theme. You want a new Calling with custom abilities? Easy to do, just make up new ones on the fly.
+## Features & Usage
 
-- To reset XP, Gold and other counters just click on the label name
-- To add items you can click a corresponding link OR use the + Buttons. Dragging items from the associated compendium to the sheet works as well.
-- Many clickable parts of the sheet display additional information on hovering over them for a while, for example Gold, XP, Stress, Skills or Shock.
-- To see the description of a Calling, Dark Impulse, Ability, etc you can just click on the added item and see all the info in the popup
-- When adding a new item you can hover over the "Question Mark" icon to see the item's description
-- To add Custom abilities just add a new "Foundry Item" of the corresponding type and fill all the necessary info. Then drag it to the sheet or add via button on a sheet
-- You can also change any information on items dragged to the sheet for customization
-- Red dots on the appearing on mouse-over are used to empty bars or clocks
-- Trash bins appearing on mouse-over are used to remove items like defenses or abilities from the sheet
-- Enabling shock auto-applies a -1D modifier to the roll, but does not automatically clear after rolling
-#### Actor Sheets
-- Actions and Resistance Rolls are rolled by clicking the appropriate Action Attribute, opening a Roll Popup with further options
-- Practice XP can be counted by clicking the first empty checkbox of each skill, filling it up until full.
-#### Clocks
-- To add a clock, go to the Actors tab and create a new actor of type "🕛 Clock". You can drag it onto the scene to create a clock token displaying progress synced with the sidebar clock (great to have progress always visible on scenes). You can edit the token as usual to change the segment count as well.
-#### GM Rolls
-- GM Rolls are done using the dice icon on the left side of the screen, last icon in the toolbar. Clicking pops up a Roll Prompt containing every type of role described in the book. Players may roll less commonly needed rolls like Creature Rolls, Trap Rolls or Loot Rolls here. 
+### Included Actor Sheets
+The system contains bespoke, custom-styled sheets for both the core **Wicked Ones** game and the **Undead Awakening** expansion:
+- **Player Characters (Wicked Ones, Awakened & Primal Monsters):** Supports standard Callings, Undead Awakened types (automatically swapping *Banter/Threaten* for *Horrify/Command* and hiding Gold), and full custom interfaces for **Primal Monsters** (*Braineater* Psionic Disciplines, interactive *Doomseeker* Eye-Ray image maps, *Facestealer* Stolen Faces, and *Goldmonger* Growth Paths & Size trackers).
+- **Minion Packs:** Supports both standard **Minion Packs** and Undead Awakening **Zombie Packs**.
+- **Dungeons:** Track your Dungeon Theme, Sanctum mechanic, Tier (`0–4`), Tier-3 Rooms (with automatic Theme Flexibility highlighting), Dungeon Description, and 6-step Master Plan.
+- **Adventurer Parties:** Manage invading Adventurers and Hirelings (with built-in random class/trait/motivation generators), cycle through 3-state Heart damage slashes, and roll Defensive Moves directly via the shield icon.
+- **Factions & Factions (UA):** Track Faction tiers, categories, and clocks—with automatic canvas token artwork syncing when a Faction's tier or alignment changes.
+- **GM Sheets &GM Sheets (UA):** Dedicated GM dashboard sheets for tracking the active **Phase of Play** (with localized rules prompts), Calamities, Blowback, and campaign notes.
+- **Conquest Sheet (UA):** Manage the Undead Awakening Conquest map, adjustable Conquest Candle, Domain states (*Horde*, *Horror*, *Corruption*), and Conquest Abilities.
+- **Clocks (`⏰ Clock`):** Create standalone progress clocks (`4`, `6`, `8`, or `12` segments) and drag them onto the canvas as tokens whose artwork stays synced with the sheet.
+
+### Compendia & In-Game Interface Guide
+All official items and content from the rulebooks—including Adventurers, Awakened Types, Callings, Conquest Abilities, Defenses, Downtime Projects, Dungeon Duties, Tier-3 Rooms, Dungeon Themes, Gear & Supply, Goldmonger Types, Major Invasions, Impulses, Minion Types & Upgrades, Monster Races, Revelries, and Special Abilities—are included in the system compendia and can be customized on the fly.
+
+When you create a new world, a multi-page **Wicked Ones — Interface & Sheet Guide** Journal Entry is automatically imported into your Journal sidebar (and is always available in the `System Documentation` compendium) to help players and GMs learn every sheet shortcut.
+
+### Quick Interface Tips
+- **Adding Items (`+` Icon):** Hover over any brown section header bar (or labels like *Calling*, *Monster Race*, or *Revelry*) and click the **`+` button** that fades into view to open a filtered item picker. Dragging and dropping from a Compendium works as well.
+- **Resetting Trackers (Hidden Red Dot / `0`):** Hover just to the **left** of the first square/tooth/dot on any skill, XP, Gold, or Move tracker (or top-left of a clock) to reveal a **red reset dot** or **`0` icon** that clears the bar back to zero.
+- **Editing & Deleting Items:** Click any added item's **bold title** to open its editor sheet. Hover over an item row to reveal a **trash can icon** on the right to delete it.
+- **Tooltips & Light Tongue Reference:** Many elements display rules tooltips when hovered over. On a Player Character's **Notes** tab, hover over the **speech-bubble icon** next to `NOTES` to pop up the 20-word **Light Tongue** reference grid!
+- **Shared Supply Sync:** Marking uses on a **Shared** supply item automatically synchronizes the remaining uses across all Player Character sheets in the world.
+- **Shocked Penalty:** Clicking the diamond next to an Attribute header toggles **Shocked**, automatically applying a `-1d` modifier to rolls for that attribute.
+- **Practice XP:** Click the vertical double-diamond icon next to an Attribute header to cycle through Practice XP slashes (`0` → `1` → `2`) on the first skill box.
+- **Action & Resistance Rolls:** Click any **Skill Name** or **Attribute Header** on a sheet to open the Skill Roll dialog.
+- **General / GM Dice Roller:** Click the **Dice icon** at the bottom of the left-hand Scene Controls toolbar to open the multi-roller for Fortune, Engagement, Starting Location, Pathing, Loot, Slumber, or raw dice pools.
+
 #### Translation
-The system can be translated, see the en.json file, make your own version (for example ger.json for german) and write us if you want to get your language included. Do not hesitate to ask us for help if you want to translate the game into your language!
-#### Player Permissions
-If you want players to have freedom to create their own items, changing their permissions to Trusted or GM Assistant or setting custom permissions is advised. Without permissions they can still add or edit all items and descriptions on their sheet but not create new ones in the sidebar. By default permissions should be sufficient to create a regular or custom character.
-#### Additional Assets
-Getting the official Wicked Ones assets pack is highly recommended if you want to use the Sandbox Maps (like the one shown down below) or things like monster tokens! The Asset Pack should be downloadable on either DrivethroughRPG or somewhere on Kickstarter if you backed the game.
+The system can be translated—see the `lang/en.json` file, create your own version (for example `de.json` for German), and reach out if you want to get your language included. Do not hesitate to ask us for help if you want to translate the game into your language!
 
-## Screenshots of the system
-(click for full size)
+#### Player Permissions
+If you want players to have freedom to create their own custom items from scratch, changing their role to Trusted Player or setting custom item creation permissions is advised. By default, standard Player permissions are sufficient to create characters and add/edit all items on their owned sheets.
+
+#### Additional Assets
+Getting the official Wicked Ones assets pack is highly recommended if you want to use the Sandbox Maps (like the one shown below) or monster tokens!
+
+---
+
+## Screenshots of the System
+*(Click for full size)*
+
 ### Wicked One and Minion Sheet
-Items or abilities are added by either clicking the description title or the **+** icon appearing on hover, deleting is done by clicking the trash bin appearing on hover. Dragging and dropping from a Compendium works as well. **Red dots** appearing on mouse-over or (0) for clocks are used to **reset skill bars or clocks**. **Practice XP** is shown by a slash or cross in the first skill square. Many elements display **tooltips** after **hovering over them** for a while.
+Items or abilities are added by clicking the **+** icon appearing on hover; deleting is done by clicking the trash bin appearing on hover. Dragging and dropping from a Compendium works as well. **Red dots** appearing on mouse-over or `(0)` for clocks are used to **reset skill bars or clocks**. **Practice XP** is shown by a slash or cross in the first skill square. Many elements display **tooltips** after **hovering over them** for a moment.
 ![Main Sheets](readme-images/wominionscompendia.png)
+
 ### Adventurers, Dungeons and Clocks Sheets
 ![Adventurers, Dungeons and Clocks Sheets](readme-images/othersheets.png)
+
 ### Example World Map with Faction Markers
-Tiers are shown by the inner spikes of their tokens, Aligment is shown by their colour. **Drag and drop** a created faction to the scene to create this kind of token for them.
+Tiers are shown by the inner spikes of their tokens; alignment is shown by their color. **Drag and drop** a created Faction onto the scene to place a synced banner token for them.
 ![Example World Map](readme-images/factions.png)
-### Example Rolls and custom "Claw Marks" dice (if you use the Dice So Nice! module)
-All proper rolls give you their outcome right in the chat (and you can **click the result to hide descriptions**, optional default to hidden **toggle available in the system settings!**) If you use **Dice So Nice!** you have the choice of **four custom Wicked Ones sets**: Dots (white or dark), Claw Marks or classic numbers, with dots being the default.
+
+### Example Rolls and Custom "Claw Marks" Dice (with the Dice So Nice! Module)
+All proper rolls show their outcome right in the chat (and you can **click the result to toggle descriptions**, with an optional default-to-hidden **toggle available in the System Settings!**). If you use **Dice So Nice!**, you have the choice of **four custom Wicked Ones sets**: Dots (white or dark), Claw Marks, or classic numbers, with dots being the default.
 ![Rolls and Dice](readme-images/dice.png)
-### Roller Pop-Ups, Multi-Roller on the left and Skill-Roller on the right
-Skill-Roller pops up on **clicking skills on the sheets**, adjusts to selected options. **Multi-Roller** (dice button in the toolbar) contains all the other rolls the GM and players need for things like Engagement, Dungeon Defense and other purposes
+
+### Roller Pop-Ups: Multi-Roller (Left) and Skill-Roller (Right)
+The **Skill-Roller** pops up on **clicking skills on the sheets** and adjusts dynamically to selected options. The **Multi-Roller** (dice button in the left-hand scene controls toolbar) contains all the other rolls the GM and players need for Engagement, Dungeon Defense, Loot, and other purposes.
 ![Popups](readme-images/rollers.png)
-### A few editable item windows
+
+### Editable Item Windows
 **Every item entry is clickable and customizable** (both in title and description)! Enter your own descriptions and customize your world.
 ![Editable items](readme-images/items.png)
-## Mod Recommendations
-- **Dice So Nice!** to use the 3D dice coming with this system
-- **Chat Images** it's always nice to be able to post or drag inspirational images into the chat when world building
-- **Drag Upload** Good for populating the map fast with tokens you do not need to fill with stats (Monster or Human Camps)
-- **Select tool everywhere** + **Better Text Drawings** help with dealing with dungeon drawing
 
-**Disclaimer**: These Recommendations are not checked for compatibility and are compatible as of now, but that might change! Many other mods may come in handy as well depending on what you want to do in your game.
+---
 
-## To be done
-- Bugfixes
-- Dashboard sheet for the GM for easy tracking of past invasions, pocketed blowback and other game data
+## Module Recommendations
+- **Dice So Nice!** to use the custom 3D dice included with this system.
+- **Chat Images** — always nice to be able to post or drag inspirational images into the chat when world-building.
+- **Drag Upload** — great for populating the map quickly with tokens that do not need full actor stats (e.g., Monster or Human Camps).
+
+**Disclaimer**: Always check module compatibility with your current Foundry VTT version.
+
+## Future Ideas & Roadmap
+- Future migration of sheets from Foundry's `AppV1` compatibility layer to `ApplicationV2` ahead of Foundry VTT v16
 - Explore the possible addition of context menus
-- Ability to drag skills into the macro bar for easy access
-- Quality of life improvements and limited automation
-- Evaluate user input for further improvements
-
-## To be done in the near future
-- Add UA Content when it comes out (and after getting permission of course) ;)
+- Ability to drag skills into the macro hotbar for quick access
+- Quality-of-life improvements and bugfixes based on community feedback
 
 ## Troubleshooting
-- If you cannot find the drag-n-dropped item, refer to the "All" tab on each sheet
+- **Missing Drag-and-Dropped Item:** If you cannot find an item you dragged onto a sheet, check the **"All"** tab on that sheet (it may be filtered out if it belongs to a different character/pack type).
 
 ## Credits
-- This work is based on Wicked Ones by Ben Nielson and Victor Costa, a huge **Thank You!** to both of them for letting us use the wonderful official written and graphical content from the book to fill our system with!
-- Wicked Ones is based on Blades in the Dark (Forged in the Dark License) (found at http://www.bladesinthedark.com/), product of One Seven Design, developed and authored by John Harper, and licensed for our use under the Creative Commons Attribution 3.0 Unported license (http://creativecommons.org/licenses/by/3.0/).
-
+- This work is based on *Wicked Ones* by Ben Nielson and Victor Costa—a huge **Thank You!** to both of them for letting us use the wonderful official written and graphical content from the book to build this system!
+- *Wicked Ones* is based on *Blades in the Dark* (Forged in the Dark License) (found at http://www.bladesinthedark.com/), a product of One Seven Design, developed and authored by John Harper, and licensed for our use under the Creative Commons Attribution 3.0 Unported license (http://creativecommons.org/licenses/by/3.0/).

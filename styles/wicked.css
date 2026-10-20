@@ -684,16 +684,16 @@ form.wicked-one-sheet #abilities-list tr td:nth-of-type(3), form.wicked-one-shee
   width: 20px;
 }
 form.wicked-one-sheet #abilities-list .group-core {
-  background-color: rgba(104, 51, 44, 0.2470588235);
+  background-color: #68332c3f;
 }
 form.wicked-one-sheet #abilities-list .group-flex {
-  background-color: rgba(153, 153, 153, 0.2470588235);
+  background-color: #9999993f;
 }
 form.wicked-one-sheet #abilities-list .group-flex td.item-body i {
   font-size: 14px;
 }
 form.wicked-one-sheet #abilities-list .group-ext {
-  background-color: rgba(153, 153, 153, 0.2470588235);
+  background-color: #9999993f;
 }
 form.wicked-one-sheet #abilities-list .group-ext td.item-body i {
   font-size: 14px;
@@ -808,9 +808,10 @@ form.wicked-one-sheet #abilities-list tr.eye-rays .ray-container div.doomseeker-
   margin-top: 30px;
 }
 form.wicked-one-sheet #abilities-list tr.eye-rays .ray-container div.doomseeker-img img {
+  display: inline-block;
   width: 200px;
   height: 200px;
-  margin: 0px;
+  margin: 0 auto;
   border-style: none;
   position: relative;
   transition: filter 0.1s;
@@ -870,6 +871,8 @@ form.wicked-one-sheet #abilities-list tr.stolen-face td:first-child {
   text-align: center;
 }
 form.wicked-one-sheet #abilities-list tr.stolen-face td:first-child img {
+  display: inline-block;
+  margin: 0 auto;
   max-height: 120px;
   max-width: 100px;
   object-fit: contain;
@@ -953,7 +956,7 @@ form.wicked-one-sheet #abilities .flashback-clues {
   text-align: center;
 }
 form.wicked-one-sheet #loadout .group-ability {
-  background-color: rgba(153, 153, 153, 0.2470588235);
+  background-color: #9999993f;
 }
 form.wicked-one-sheet #loadout .group-ability td.item-body i {
   font-size: 14px;
@@ -1138,16 +1141,15 @@ form.wicked-one-sheet #project-clocks-table tr td:nth-of-type(2) {
 form.wicked-one-sheet #project-clocks-table tr td:nth-of-type(4) {
   width: 20px;
 }
-form.wicked-one-sheet #duties-table tr td:nth-of-type(1),
-form.wicked-one-sheet #duties-table tr td:nth-of-type(2) {
+form.wicked-one-sheet #duties-table tr td:nth-of-type(1) {
   text-align: center;
   width: 5%;
 }
-form.wicked-one-sheet #duties-table tr td:nth-of-type(3) {
+form.wicked-one-sheet #duties-table tr td:nth-of-type(2) {
   text-align: center;
   width: 12%;
 }
-form.wicked-one-sheet #duties-table tr td:nth-of-type(5) {
+form.wicked-one-sheet #duties-table tr td:nth-of-type(4) {
   width: 20px;
 }
 form.wicked-one-sheet #duties-table tbody td:nth-of-type(1) {
@@ -1163,6 +1165,7 @@ form.wicked-one-sheet #duties-table tbody td:nth-of-type(1) {
   grid-column-gap: 20px;
   font-family: Piedra;
   text-transform: uppercase;
+  color: black;
 }
 #tongue-grid div:first-child {
   color: #68332c;
@@ -1366,7 +1369,7 @@ form.minion-sheet #picture-td {
   text-align: right;
 }
 form.minion-sheet #abilities-list .group-ext {
-  background-color: rgba(153, 153, 153, 0.2470588235);
+  background-color: #9999993f;
 }
 form.minion-sheet #abilities-list .group-ext td.item-body i {
   font-size: 14px;
@@ -1529,9 +1532,6 @@ form.dungeon-sheet #dungeon-theme-bar td:first-child {
 form.dungeon-sheet #dungeon-theme-bar td:last-child {
   padding: 0px;
 }
-form.dungeon-sheet #dungeon-theme-bar td:nth-of-type(2) {
-  background-color: #68332c;
-}
 form.dungeon-sheet #dungeon-theme-bar tr:hover .item-add-popup {
   transition: opacity 0.5s;
   opacity: 1;
@@ -1541,7 +1541,7 @@ form.dungeon-sheet #dungeon-theme-bar tr .item-add-popup {
   opacity: 0.1;
 }
 form.dungeon-sheet #dungeon-tier {
-  background-color: rgba(104, 51, 44, 0.2470588235);
+  background-color: #68332c3f;
   height: 33px;
   width: 145px;
   display: flex;
@@ -1588,11 +1588,11 @@ form.dungeon-sheet .profile-img {
 form.dungeon-sheet .item-special-feature {
   margin: 0px 10px;
   border-radius: 20px;
-  background: rgba(104, 51, 44, 0.2470588235);
+  background: #68332c3f;
   padding: 10px;
 }
 form.dungeon-sheet #rooms .group-flex {
-  background-color: rgba(153, 153, 153, 0.2470588235);
+  background-color: #9999993f;
 }
 form.dungeon-sheet #rooms .group-flex td.item-body i {
   font-size: 14px;
@@ -2548,6 +2548,7 @@ form.party-sheet .adventurer-hearts label.hidden {
 form.party-sheet td.moves-radio div {
   display: flex;
   /* Hide the browser's default checkbox */
+  align-items: center;
 }
 form.party-sheet td.moves-radio div label {
   height: 24px;
@@ -2611,11 +2612,18 @@ form.party-sheet td.moves-radio div input:checked + label.practice-one {
 form.party-sheet td.moves-radio div input:checked + label.practice-two {
   background-image: url("assets/boxes/box-crossed.png");
 }
-form.party-sheet td.moves-radio div label.rollable-text {
+form.party-sheet td.moves-radio div label.fa-shield {
   background-image: none !important;
-  text-align: center;
-  line-height: 1.5;
+  width: auto;
+  height: auto;
+  font-size: 18px;
   color: #04578f;
+  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+}
+form.party-sheet td.moves-radio div label.fa-shield:hover {
+  color: #a20000;
 }
 form.party-sheet td.moves-radio:hover > div.attributes-container label {
   transition: opacity 1s;
@@ -3273,7 +3281,7 @@ form.conquest-sheet .threatened input[type=checkbox]:checked + label {
   background-image: url("assets/boxes/threatened-red.png");
 }
 form.conquest-sheet .group-core {
-  background-color: rgba(104, 51, 44, 0.2470588235);
+  background-color: #68332c3f;
 }
 form.conquest-sheet #campaign-theme-bar {
   font-size: 18px;
@@ -3298,7 +3306,7 @@ form.conquest-sheet #campaign-theme-bar tr .item-add-popup {
   opacity: 0.1;
 }
 form.conquest-sheet table.candle .highlighted {
-  background-color: rgba(104, 51, 44, 0.2470588235);
+  background-color: #68332c3f;
 }
 form.conquest-sheet table.candle img {
   border: hidden;
@@ -4138,123 +4146,197 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
 /* 
  *  Make clock resets invisible unless hovered
  */
-#chat .chat-label {
+#chat .chat-label,
+#chat-notifications .chat-label,
+.chat-log .chat-label {
   background-color: #191919;
   color: #EEEFFF;
   font-size: 24px;
   text-align: center;
-  padding: 0px 5px;
-  height: 36px !important;
+  padding: 2px 5px;
+  min-height: 36px;
+  height: auto !important;
   text-transform: capitalize;
 }
-#chat .chat-label-small {
+#chat .chat-label-small,
+#chat-notifications .chat-label-small,
+.chat-log .chat-label-small {
   background-color: #999;
   color: #191919;
   font-size: small;
   text-align: center;
   padding: 3px 5px;
-  height: 26px !important;
+  min-height: 26px;
+  height: auto !important;
 }
-#chat .chat-message {
+#chat .chat-message,
+#chat-notifications .chat-message,
+.chat-log .chat-message {
   padding: 5px;
   color: #191919;
   font-size: 14px;
   background: url(../styles/assets/images/background-light.webp) repeat;
   background-size: 300px;
-  box-shadow: inset 0 0 9px 1px rgba(64, 0, 0, 0.3098039216);
+  box-shadow: inset 0 0 9px 1px #4000004f;
 }
-#chat .chat-message.whisper {
+#chat .chat-message.whisper,
+#chat-notifications .chat-message.whisper,
+.chat-log .chat-message.whisper {
   background: #e8e8ef;
 }
-#chat .chat-message .message-header .message-sender {
+#chat .chat-message .message-header .message-sender,
+#chat-notifications .chat-message .message-header .message-sender,
+.chat-log .chat-message .message-header .message-sender {
   font-family: Piedra;
   font-weight: normal;
   font-size: 15px;
+  color: #191919;
 }
-#chat .chat-message .message-header .message-metadata {
+#chat .chat-message .message-header .message-metadata,
+#chat-notifications .chat-message .message-header .message-metadata,
+.chat-log .chat-message .message-header .message-metadata {
   text-align: right;
   font-weight: 700;
+  color: #191919;
 }
-#chat .chat-message .message-content {
+#chat .chat-message .message-content,
+#chat-notifications .chat-message .message-content,
+.chat-log .chat-message .message-content {
   font-family: Bitter;
   font-size: inherit;
   font-weight: 600;
+  color: #191919;
 }
-#chat .label-stripe-chat-small, #chat .label-stripe-chat {
+#chat .label-stripe-chat-small, #chat .label-stripe-chat,
+#chat-notifications .label-stripe-chat-small,
+#chat-notifications .label-stripe-chat,
+.chat-log .label-stripe-chat-small,
+.chat-log .label-stripe-chat {
   font-family: Piedra;
   font-weight: normal;
   position: relative;
   padding-top: 3px;
 }
-#chat .label-stripe-chat {
+#chat .label-stripe-chat,
+#chat-notifications .label-stripe-chat,
+.chat-log .label-stripe-chat {
   color: white;
   background-color: #68332c;
   margin: 0;
+  padding: 3px 6px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 32px;
+  height: auto !important;
   border-top-left-radius: 5px;
   text-shadow: 2px 2px 0 #313131;
 }
-#chat .label-stripe-chat-small {
+#chat .label-stripe-chat .black-label,
+#chat .label-stripe-chat .chat-label,
+#chat-notifications .label-stripe-chat .black-label,
+#chat-notifications .label-stripe-chat .chat-label,
+.chat-log .label-stripe-chat .black-label,
+.chat-log .label-stripe-chat .chat-label {
+  height: auto !important;
+  line-height: 1.15;
+  text-align: left;
+  padding: 2px 4px;
+}
+#chat .label-stripe-chat-small,
+#chat-notifications .label-stripe-chat-small,
+.chat-log .label-stripe-chat-small {
   color: #191919;
   background-color: #bdb7ab;
   margin-bottom: 0px;
   text-transform: capitalize;
   font-size: 16px;
+  height: auto !important;
 }
-#chat .wicked-die-tooltip.dice-roll {
+#chat .wicked-die-tooltip.dice-roll,
+#chat-notifications .wicked-die-tooltip.dice-roll,
+.chat-log .wicked-die-tooltip.dice-roll {
   display: block;
 }
-#chat .wicked-die-tooltip.dice-roll .dice-tooltip.exp {
+#chat .wicked-die-tooltip.dice-roll .dice-tooltip.exp,
+#chat-notifications .wicked-die-tooltip.dice-roll .dice-tooltip.exp,
+.chat-log .wicked-die-tooltip.dice-roll .dice-tooltip.exp {
   display: block;
 }
-#chat .wicked-die-tooltip.dice-roll .dice-rolls {
+#chat .wicked-die-tooltip.dice-roll .dice-rolls,
+#chat-notifications .wicked-die-tooltip.dice-roll .dice-rolls,
+.chat-log .wicked-die-tooltip.dice-roll .dice-rolls {
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
 }
-#chat .wicked-die-tooltip.dice-roll .zero-hint {
+#chat .wicked-die-tooltip.dice-roll .zero-hint,
+#chat-notifications .wicked-die-tooltip.dice-roll .zero-hint,
+.chat-log .wicked-die-tooltip.dice-roll .zero-hint {
   font-size: 18px;
   font-weight: 700;
   margin-left: 15px;
   align-self: center;
 }
-#chat .wicked-die-tooltip .label-type {
+#chat .wicked-die-tooltip .label-type,
+#chat-notifications .wicked-die-tooltip .label-type,
+.chat-log .wicked-die-tooltip .label-type {
   text-transform: uppercase;
   color: white;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: right;
   font-family: Bitter;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.15;
   margin: 0;
   margin-left: auto;
+  flex-shrink: 0;
   border-top-left-radius: 5px;
-  flex: 1 1 min-content;
-  max-width: max-content;
 }
-#chat .wicked-die-tooltip .die {
+#chat .wicked-die-tooltip .die,
+#chat-notifications .wicked-die-tooltip .die,
+.chat-log .wicked-die-tooltip .die {
   text-transform: uppercase;
   color: white;
   font-family: Piedra;
   font-weight: normal;
   font-size: 24px;
   text-align: center;
-  height: 30px;
+  min-height: 30px;
+  height: auto;
+  padding: 2px 0;
   border-bottom: 3px solid;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
 }
-#chat .wicked-die-tooltip .die.critical {
+#chat .wicked-die-tooltip .die.critical,
+#chat-notifications .wicked-die-tooltip .die.critical,
+.chat-log .wicked-die-tooltip .die.critical {
   color: #b12c20;
 }
-#chat .wicked-die-tooltip .die.success {
+#chat .wicked-die-tooltip .die.success,
+#chat-notifications .wicked-die-tooltip .die.success,
+.chat-log .wicked-die-tooltip .die.success {
   color: #862118;
 }
-#chat .wicked-die-tooltip .die.mixed {
+#chat .wicked-die-tooltip .die.mixed,
+#chat-notifications .wicked-die-tooltip .die.mixed,
+.chat-log .wicked-die-tooltip .die.mixed {
   color: #2c3678;
 }
-#chat .wicked-die-tooltip .die.failure {
+#chat .wicked-die-tooltip .die.failure,
+#chat-notifications .wicked-die-tooltip .die.failure,
+.chat-log .wicked-die-tooltip .die.failure {
   color: #656666;
 }
-#chat .wicked-die-tooltip .wicked-die {
+#chat .wicked-die-tooltip .wicked-die,
+#chat-notifications .wicked-die-tooltip .wicked-die,
+.chat-log .wicked-die-tooltip .wicked-die {
   width: 32px;
   height: 32px;
   float: left;
@@ -4262,29 +4344,45 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
   background-size: contain;
   color: transparent;
 }
-#chat .wicked-die-tooltip .wicked-die.wd1 {
+#chat .wicked-die-tooltip .wicked-die.wd1,
+#chat-notifications .wicked-die-tooltip .wicked-die.wd1,
+.chat-log .wicked-die-tooltip .wicked-die.wd1 {
   background-image: url("assets/dice/die-1-grey.png");
 }
-#chat .wicked-die-tooltip .wicked-die.wd2 {
+#chat .wicked-die-tooltip .wicked-die.wd2,
+#chat-notifications .wicked-die-tooltip .wicked-die.wd2,
+.chat-log .wicked-die-tooltip .wicked-die.wd2 {
   background-image: url("assets/dice/die-2-grey.png");
 }
-#chat .wicked-die-tooltip .wicked-die.wd3 {
+#chat .wicked-die-tooltip .wicked-die.wd3,
+#chat-notifications .wicked-die-tooltip .wicked-die.wd3,
+.chat-log .wicked-die-tooltip .wicked-die.wd3 {
   background-image: url("assets/dice/die-3-grey.png");
 }
-#chat .wicked-die-tooltip .wicked-die.wd4 {
+#chat .wicked-die-tooltip .wicked-die.wd4,
+#chat-notifications .wicked-die-tooltip .wicked-die.wd4,
+.chat-log .wicked-die-tooltip .wicked-die.wd4 {
   background-image: url("assets/dice/die-4-blue.png");
 }
-#chat .wicked-die-tooltip .wicked-die.wd5 {
+#chat .wicked-die-tooltip .wicked-die.wd5,
+#chat-notifications .wicked-die-tooltip .wicked-die.wd5,
+.chat-log .wicked-die-tooltip .wicked-die.wd5 {
   background-image: url("assets/dice/die-5-blue.png");
 }
-#chat .wicked-die-tooltip .wicked-die.wd6 {
+#chat .wicked-die-tooltip .wicked-die.wd6,
+#chat-notifications .wicked-die-tooltip .wicked-die.wd6,
+.chat-log .wicked-die-tooltip .wicked-die.wd6 {
   background-image: url("assets/dice/die-6-red.png");
 }
-#chat .description {
+#chat .description,
+#chat-notifications .description,
+.chat-log .description {
   font-style: italic;
   font-weight: 600;
 }
-#chat .dice-tooltip .dice-rolls .roll.d6 {
+#chat .dice-tooltip .dice-rolls .roll.d6,
+#chat-notifications .dice-tooltip .dice-rolls .roll.d6,
+.chat-log .dice-tooltip .dice-rolls .roll.d6 {
   font-family: Signika;
 }
 
@@ -4294,9 +4392,13 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
   font-weight: 700;
 }
 
-#chat-form textarea {
+#chat-form textarea,
+.chat-form textarea#chat-message {
   background: url(../styles/assets/images/background-light.webp) repeat;
   background-size: 300px;
+  color: #191919;
+  font-family: Bitter, sans-serif;
+  font-weight: 600;
 }
 
 /*
@@ -4470,14 +4572,14 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
 }
 #items-to-add > flex-horizontal {
   padding: 3px;
-  border-bottom: 1px solid rgba(64, 0, 0, 0.3607843137);
+  border-bottom: 1px solid #4000005c;
 }
 #items-to-add label.cross-system:nth-of-type(2n),
 #items-to-add label.external:nth-of-type(2n) {
-  background: rgba(153, 153, 153, 0.2470588235);
+  background: #9999993f;
 }
 #items-to-add label:nth-of-type(2n) {
-  background: rgba(104, 51, 44, 0.2470588235);
+  background: #68332c3f;
 }
 #items-to-add .fa-question-circle {
   padding: 2px 3px;
@@ -4507,14 +4609,16 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
 /*
  *   Layout Styles
  */
-.sheet {
+.window-app.sheet {
   min-width: min-content;
 }
 
-/* WO-Borders for windows and sheets*/
+/* WO-Borders for windows and sheets */
 .window-app .window-content {
-  background: url(../styles/assets/images/background-light.webp) repeat;
   color: #191919;
+  font-family: Bitter, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
   overflow-y: auto;
   background: url(../styles/assets/decorations/border-left.png), url(../styles/assets/decorations/border-right.png), url(../styles/assets/images/background-light.webp);
   background-repeat: repeat-y, repeat-y, repeat;
@@ -4528,28 +4632,108 @@ form.special-ability-sheet #ray-selection div.ray-line select:nth-child(2) {
 
 /* Overlay-Style for visibility for dialogs (else borders disrupt readability) */
 .dialog-content {
-  background-color: rgba(255, 250, 240, 0.5882352941);
+  background-color: #fffaf096;
   border-radius: 5px;
-  box-shadow: 0 0 6px 7px rgba(255, 250, 240, 0.5882352941);
+  box-shadow: 0 0 6px 7px #fffaf096;
 }
 
-section {
+/*
+ * Zero-specificity scope wrapper (:where) so V12 internal sheet specificity is 100% preserved
+ * while preventing global tag rules from leaking into Foundry V14's core UI.
+ */
+:where(.window-app .window-content) section {
   display: flex;
   flex-direction: column;
 }
-section > form:last-child {
+:where(.window-app .window-content) section > form:last-child {
   margin-right: 0px;
 }
-section .grow-one {
+:where(.window-app .window-content) section .grow-one {
   flex-grow: 1;
 }
-section .grow-two {
+:where(.window-app .window-content) section .grow-two {
   flex-grow: 2;
 }
+:where(.window-app .window-content) nav {
+  margin-bottom: 10px;
+}
+:where(.window-app .window-content) table {
+  width: 100%;
+  border: none;
+  background: none;
+  margin: 0;
+}
+:where(.window-app .window-content) table th:hover .item-add-popup {
+  transition: opacity 0.5s;
+  opacity: 1;
+}
+:where(.window-app .window-content) table th .item-add-popup {
+  transition: opacity 0.5s;
+  opacity: 0.1;
+}
+:where(.window-app .window-content) table tr,
+:where(.window-app .window-content) table tr:nth-child(even) {
+  background-color: initial;
+}
+:where(.window-app .window-content) table td, :where(.window-app .window-content) table th {
+  padding: 5px;
+  border: none;
+}
+:where(.window-app .window-content) table td:first-child {
+  padding-left: 5px;
+}
+:where(.window-app .window-content) h1, :where(.window-app .window-content) h2, :where(.window-app .window-content) h3, :where(.window-app .window-content) h4 {
+  font-weight: bold;
+}
+:where(.window-app .window-content) select {
+  font-family: Bitter, Lucida Console, monospace;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 0px;
+  border: 1px solid #68332c;
+  color: #191919;
+  background: rgba(255, 255, 255, 0.25);
+}
+:where(.window-app .window-content) option {
+  font-weight: 600;
+  color: #191919;
+  background: #c9c7b8;
+}
+:where(.window-app .window-content) input[type=text], :where(.window-app .window-content) input[type=number], :where(.window-app .window-content) input[type=password],
+:where(.window-app .window-content) input[type=date], :where(.window-app .window-content) input[type=time], :where(.window-app .window-content) input[type=range] {
+  font-weight: 600;
+  border: 1px solid #68332c;
+  border-radius: 0;
+  width: 100%;
+  color: #191919;
+  background: rgba(0, 0, 0, 0.05);
+}
+:where(.window-app .window-content) textarea {
+  color: #400000;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-family: Bitter;
+  font-weight: 600;
+  min-height: 80px;
+  resize: none;
+}
+:where(.window-app .window-content) form .notes, :where(.window-app .window-content) form .hint {
+  font-weight: 600;
+}
+:where(.window-app .window-content) form .form-group label {
+  font-weight: 700;
+}
 
+/* Ensure inactive AppV1 tabs are hidden in Foundry V14 */
+.window-app .tab[data-tab]:not(.active) {
+  display: none !important;
+}
+
+/* Keep horizontal flex containers side-by-side without unintended wrapping */
 .flex-horizontal {
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: space-between;
 }
 
@@ -4581,13 +4765,6 @@ table.base-info tr .text-input input {
   border-radius: 0;
 }
 
-/*
- *   Navigation Styles
- */
-nav {
-  margin-bottom: 10px;
-}
-
 .tab-content {
   margin-right: 8px;
 }
@@ -4602,7 +4779,7 @@ nav {
   border: 0px;
 }
 
-.tabs .item.active {
+.window-app .tabs .item.active {
   font-weight: 700;
   color: #400000;
   text-shadow: 2px 2px 7px #d46c1f;
@@ -4612,62 +4789,14 @@ nav {
  *   Element Styles
  */
 body {
-  font-family: Bitter, sans-serif;
-  font-weight: 500;
-  font-size: 14px;
   background: url("../styles/assets/images/WO-Background.webp");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
 }
 
-table {
-  width: 100.1%;
-}
-table th:hover .item-add-popup {
-  transition: opacity 0.5s;
-  opacity: 1;
-}
-table th .item-add-popup {
-  transition: opacity 0.5s;
-  opacity: 0.1;
-}
-table tr:nth-child(even) {
-  background-color: initial;
-}
-table td, table th {
-  padding: 5px;
-}
-table td:first-child {
-  padding-left: 5px;
-}
-
-h1, h2, h3, h4 {
-  font-weight: bold;
-}
-
 .item-checkmark {
   font-weight: 700;
-}
-
-select {
-  font-family: Bitter, Lucida Console, monospace;
-  font-weight: 600;
-  font-size: 15px;
-  border-radius: 0px;
-  border: 1px solid #68332c;
-}
-
-option {
-  font-weight: 600;
-}
-
-input[type=text], input[type=number], input[type=password],
-input[type=date], input[type=time], input[type=range] {
-  font-weight: 600;
-  border: 1px solid #68332c;
-  border-radius: 0;
-  width: 100%;
 }
 
 .text-input {
@@ -4683,16 +4812,6 @@ input[type=date], input[type=time], input[type=range] {
   font-size: 20px;
   border: none;
   border-radius: 0;
-}
-
-textarea {
-  color: #400000;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  font-family: Bitter;
-  font-weight: 600;
-  min-height: 80px;
-  resize: none;
 }
 
 .checkbox-container {
@@ -4735,21 +4854,26 @@ textarea {
 }
 
 /*
- *   Button Styles
+ *   Button Styles (Scoped to AppV1 Windows & Dialogs)
  */
-.dialog .dialog-buttons button.default, * * form button, .dialog .dialog-buttons button, button {
+:where(.window-app .window-content) button,
+.dialog .dialog-buttons button,
+.dialog .dialog-buttons button.default {
   background: #68332c;
   border-top: 1px outset #d46c1f;
   border-bottom: 2px outset #d46c1f;
   border-left: 2px solid darkslategrey;
   border-right: 2px solid darkslategrey;
 }
-.dialog .dialog-buttons button:hover, button:hover, .dialog .dialog-buttons button:focus, button:focus {
+:where(.window-app .window-content) button:hover,
+.dialog .dialog-buttons button:hover, :where(.window-app .window-content) button:focus,
+.dialog .dialog-buttons button:focus {
   outline: none;
   box-shadow: 0 0 5px #d46c1f;
   background: #d46c1f;
 }
-.dialog .dialog-buttons button:disabled, button:disabled {
+:where(.window-app .window-content) button:disabled,
+.dialog .dialog-buttons button:disabled {
   outline: none;
   border-top: 1px outset #999;
   border-bottom: 2px outset #999;
@@ -4757,7 +4881,9 @@ textarea {
   background: #999;
 }
 
-button {
+:where(.window-app .window-content) button,
+.dialog .dialog-buttons button,
+.dialog .dialog-buttons button.default {
   font-family: Bitter, sans-serif;
   font-weight: 500;
   color: #fff8e8;
@@ -5072,13 +5198,14 @@ div.item i.fa-trash, tr.item i.fa-trash {
   line-height: 1.1em;
 }
 
-#pause h3 {
+#pause h3,
+#pause figcaption {
   font-weight: 600;
   text-shadow: 0px 3px 0px #68332c;
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .rollable-text {
@@ -5089,8 +5216,8 @@ div.item i.fa-trash, tr.item i.fa-trash {
   color: #a20000;
 }
 
-.editor,
-.editor-content {
+.window-app .editor,
+.window-app .editor-content {
   min-height: 280px;
   background: rgba(0, 0, 0, 0.05);
   padding: 10px;
@@ -5100,7 +5227,7 @@ div.item i.fa-trash, tr.item i.fa-trash {
   padding: 3px 0;
   line-height: 48px;
   border-top: 1px solid transparent;
-  border-bottom: 1px solid rgba(64, 0, 0, 0.3607843137);
+  border-bottom: 1px solid #4000005c;
   box-shadow: none;
 }
 
@@ -5108,26 +5235,18 @@ div.item i.fa-trash, tr.item i.fa-trash {
   content: url("assets/decorations/pause-logo.webp");
 }
 
-form .notes, form .hint {
-  font-weight: 600;
-}
-
-form .form-group label {
-  font-weight: 700;
-}
-
-/* Global Tab Style Formatting */
-nav.tabs.flex-horizontal {
+/* Global Tab Style Formatting (Scoped to AppV1 sheets) */
+.window-app nav.tabs.flex-horizontal {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 0;
 }
-nav.tabs.flex-horizontal .item {
+.window-app nav.tabs.flex-horizontal .item {
   text-align: center;
   color: black;
-  background-color: rgba(128, 128, 128, 0.2392156863);
+  background-color: #8080803d;
   line-height: 2rem;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
@@ -5135,22 +5254,32 @@ nav.tabs.flex-horizontal .item {
   box-shadow: inset 0 2px 3px 0px #68332c;
   flex: auto;
 }
-nav.tabs.flex-horizontal .item.active {
+.window-app nav.tabs.flex-horizontal .item.active {
   font-weight: 700;
   color: white;
   background-color: #68332c;
   box-shadow: none;
 }
-nav.tabs.flex-horizontal > :first-child {
+.window-app nav.tabs.flex-horizontal > :first-child {
   margin-left: 0;
 }
-nav.tabs.flex-horizontal > :last-child {
+.window-app nav.tabs.flex-horizontal > :last-child {
   margin-right: 0;
 }
 
 /*
  *  Tooltip Styles
  */
+#tooltip:has(#tongue-grid) {
+  max-width: 420px;
+  background: url(../styles/assets/images/background-light.webp) repeat;
+  color: #400000;
+  border: 2px solid #400000;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px #191919;
+}
+
 #wo-tooltip {
   visibility: hidden;
   opacity: 0;

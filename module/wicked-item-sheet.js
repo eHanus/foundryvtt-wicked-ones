@@ -1,3 +1,5 @@
+const { ItemSheet } = foundry.appv1.sheets;
+
 /**
  * Extend the basic ItemSheet
  * @extends {ItemSheet}
@@ -5,30 +7,29 @@
 export class WickedItemSheet extends ItemSheet {
 
   /** @override */
-	static get defaultOptions() {
-
-	  return mergeObject(super.defaultOptions, {
-          classes: ["wicked-ones", "sheet", "item"],
-			width: 'auto',
-			height: 'auto',
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "abilitiestab"}]
-		});
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["wicked-ones", "sheet", "item"],
+      width: 'auto',
+      height: 'auto',
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "abilitiestab" }]
+    });
   }
 
   /* -------------------------------------------- */
 
-  // Add config Values to local data object
-
   /** @override */
   async getData(options) {
-    const sheetData = super.getData(options);
+    const sheetData = await super.getData(options);
     sheetData.editable = this.options.editable;
-    sheetData.config = CONFIG.WO;
+    sheetData.config = foundry.utils.deepClone(CONFIG.WO);
 
-    sheetData.system = sheetData.data.system // project system data so that handlebars has the same name and value paths
+    // V14 robust document and system data fallback mapping
+    sheetData.item = this.item;
+    sheetData.system = this.item?.system ?? this.document?.system ?? {};
 
     // Prepare special ability data
-    if (sheetData.item.type == "specialability") {
+    if (sheetData.item.type == "specialability" && sheetData.system.primal) {
 
       if (sheetData.system.ability_type == "ds_eyes") {
 
@@ -43,7 +44,7 @@ export class WickedItemSheet extends ItemSheet {
         }
 
         // Iterate through all rays and populate available rays
-        for (const [key, value] of Object.entries(CONFIG.WO.doomseeker_eye_rays)) {
+        for (const [key] of Object.entries(CONFIG.WO.doomseeker_eye_rays)) {
           if (assigned_rays.indexOf(key) == -1) {
             available_rays[key] = CONFIG.WO.doomseeker_eye_rays[key];
           }
@@ -54,13 +55,10 @@ export class WickedItemSheet extends ItemSheet {
           sheetData.config["available_rays" + i] = {};
           let val = sheetData.system.primal['ds_eye_ray_' + i];
           if (val != "") {
-            // Add own selected avalue as available
             sheetData.config['available_rays' + i][val] = CONFIG.WO.doomseeker_eye_rays[val];
           }
 
-          // Add available values to the list to select from
-          for (const [key, value] of Object.entries(available_rays)) {
-            available_rays[key] = CONFIG.WO.doomseeker_eye_rays[key];
+          for (const [key] of Object.entries(available_rays)) {
             sheetData.config['available_rays' + i][key] = CONFIG.WO.doomseeker_eye_rays[key];
           }
         }
@@ -76,10 +74,7 @@ export class WickedItemSheet extends ItemSheet {
         sheetData.system.source = game.i18n.localize("FITD.Goldmonger");
       }
 
-    } else {
-      switch (sheetData.item.type) {
-        // Prepare dungeon duty data
-        case "duty":
+    } else if (sheetData.item.type == "duty") {
           sheetData.system.type_hint_prompt = "";
           sheetData.system.type_hint_paragraph1 = "";
           sheetData.system.type_hint_paragraph2 = "";
@@ -101,14 +96,9 @@ export class WickedItemSheet extends ItemSheet {
             case "FITD.DUTY_TYPE.Trick":
               sheetData.system.type_hint_prompt = game.i18n.localize("FITD.DUTY_TYPE.HINT.TrickPrompt");
               sheetData.system.type_hint_paragraph1 = game.i18n.localize("FITD.DUTY_TYPE.HINT.TrickParagraph");
-              break;
-
-            default:
-          }
           break;
         default:
       }
-
     }
 
     return sheetData;
@@ -118,8 +108,8 @@ export class WickedItemSheet extends ItemSheet {
 
   /** @override */
   get template() {
-      const path = "systems/wicked-ones/templates/items";
-    let simple_item_types = ["defense", "minion_type", "revelry", "awakened_type" ];
+    const path = "systems/wicked-ones/templates/items";
+    let simple_item_types = ["defense", "minion_type", "revelry", "awakened_type"];
     let template_name = `${this.item.type}`;
 
     if (simple_item_types.indexOf(this.item.type) >= 0) {
@@ -132,22 +122,18 @@ export class WickedItemSheet extends ItemSheet {
   /* -------------------------------------------- */
 
   /** @override */
-	activateListeners(html) {
+  activateListeners(html) {
     super.activateListeners(html);
 
-    // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
 
-    // Update shared supplies across actors
     html.find('.shared-supply-count').change(this._onSharedSupplyChange.bind(this));
-
-    // Update adventurer class default passive skill
     html.find('#adventurer-class-select').change(this._onAdvClassChange.bind(this));
 
-    // Update Inventory Item
     html.find('#item-type-select').change(ev => {
       const abilitytype = ev.currentTarget.value;
-      const abilitygroup = $('#item-group-select')[0];
+      const abilitygroup = html.find('#item-group-select')[0];
+      if (!abilitygroup) return;
       switch (abilitytype) {
         case "be_psi":
         case "ds_eyes":
@@ -157,7 +143,6 @@ export class WickedItemSheet extends ItemSheet {
         case "fs_face":
           abilitygroup.value = "group_faces";
           break;
-
         case "basic":
         case "advanced":
         default:
@@ -167,13 +152,10 @@ export class WickedItemSheet extends ItemSheet {
       }
     });
 
-    /* -------------------------------------------- */
-
-    // Update Edge List
     html.find('#edge-list input').change(ev => {
       const element = $(ev.currentTarget).parents(".item");
-      const idOffset = element[0].id.lastIndexOf('-') + 1;
-      const id = element[0].id.substring(idOffset);
+      const idOffset = element[0]?.id ? element[0].id.lastIndexOf('-') + 1 : -1;
+      const id = idOffset > 0 ? element[0].id.substring(idOffset) : this.object.id;
       const item = this.actor ? this.actor.items.get(id) : this.object;
       const newEdges = [];
       const inputs = html.find('#edge-list input');
@@ -185,13 +167,10 @@ export class WickedItemSheet extends ItemSheet {
       item.update({ ['system.edges']: newEdges });
     });
 
-    /* -------------------------------------------- */
-
-    // Update Adventurer Custom Field
     html.find('select.list-with-custom').change(ev => {
       const element = $(ev.currentTarget).parents(".item");
-      const idOffset = element[0].id.lastIndexOf('-') + 1;
-      const id = element[0].id.substring(idOffset);
+      const idOffset = element[0]?.id ? element[0].id.lastIndexOf('-') + 1 : -1;
+      const id = idOffset > 0 ? element[0].id.substring(idOffset) : this.object.id;
       const item = this.actor ? this.actor.items.get(id) : this.object;
       const selected = ev.currentTarget.value;
       const propertyToSet = ev.currentTarget.dataset.propertyToSet;
@@ -199,7 +178,7 @@ export class WickedItemSheet extends ItemSheet {
         item.update({ ['system.' + propertyToSet]: "" });
       } else if (selected == "random") {
         const options = ev.currentTarget.length - 3;
-        const choice = Math.floor(Math.random() * options ) + 3;
+        const choice = Math.floor(Math.random() * options) + 3;
         for (var i = 0; i < ev.currentTarget.length; i++) {
           if (i == choice) {
             ev.currentTarget[i].selected = true;
@@ -207,9 +186,8 @@ export class WickedItemSheet extends ItemSheet {
               let data = this.getAdventurerTraits(ev.currentTarget[i].value);
               data['system.' + propertyToSet] = game.i18n.localize(ev.currentTarget[i].value);
               item.update(data);
-
             } else {
-              item.update({ ['system.' + propertyToSet]: game.i18n.localize(ev.currentTarget[i].value)});
+              item.update({ ['system.' + propertyToSet]: game.i18n.localize(ev.currentTarget[i].value) });
             }
           } else {
             ev.currentTarget[i].selected = false;
@@ -220,32 +198,22 @@ export class WickedItemSheet extends ItemSheet {
       }
     });
 
-    /* -------------------------------------------- */
-
-    // Clock Size Changed
     html.find('#clock-type-list .clock-size-picker').click(ev => {
       const element = $(ev.currentTarget).parents(".item");
-      const idOffset = element[0].id.lastIndexOf('-') + 1;
-      const id = element[0].id.substring(idOffset);
+      const idOffset = element[0]?.id ? element[0].id.lastIndexOf('-') + 1 : -1;
+      const id = idOffset > 0 ? element[0].id.substring(idOffset) : this.object.id;
       const item = this.actor ? this.actor.items.get(id) : this.object;
       if (ev.target.value < item.system.clock_progress) {
         item.update({ ['system.clock_progress']: ev.target.value });
       }
       item.update({ ['system.clock_size']: ev.target.value });
     });
-
   }
-
 
   /* -------------------------------------------- */
 
-  /**
-   * Update shared supplies across characters
-   * @param {*} event
-   */
   async _onSharedSupplyChange(event) {
     event.preventDefault();
-
     let name = this.object.name;
     let value = event.currentTarget.value;
 
@@ -254,18 +222,13 @@ export class WickedItemSheet extends ItemSheet {
       actor.items.forEach(item => {
         if (item.name == name && item.type == "gearsupply") {
           if (item.system.gear_or_supply == "supply" && item.system.use_type == "shared") {
-            item.update({ ['system.uses_left' ]: value });
+            item.update({ ['system.uses_left']: value });
           }
         }
       });
     });
-
   }
 
-  /**
-   * Update adventurer passive on class change
-   * @param {*} event 
-   */
   async _onAdvClassChange(event) {
     let newClass = event.currentTarget.value;
     if (newClass == "" || newClass == "random" || newClass == "custom") {
@@ -275,12 +238,7 @@ export class WickedItemSheet extends ItemSheet {
     this.object.update(data);
   }
 
-  /**
-   * Get adventurer traits by class
-   * @param {*} adventurerClass 
-   */
   getAdventurerTraits(adventurerClass) {
-
     let newName = game.i18n.localize(adventurerClass);
     let newPassive = game.i18n.localize(adventurerClass.replace('ADV_CLASS', 'ADV_CLASS_PASSIVE'));
     let newMotivation = '';
@@ -458,10 +416,7 @@ export class WickedItemSheet extends ItemSheet {
       ['system.trait_neg_1_custom']: game.i18n.localize(newNeg),
       ['system.trait_neg_2']: '',
       ['system.trait_neg_2_custom']: ''
-    }
+    };
     return data;
   }
-
-
-  /* -------------------------------------------- */
 }

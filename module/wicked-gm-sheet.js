@@ -1,5 +1,7 @@
-import { wickedRoll } from "./wicked-roll.js";
 import { WickedSheet } from "./wicked-sheet.js";
+import { WickedHelpers } from "./wicked-helpers.js";
+
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
 
 /**
  * @extends {WickedSheet}
@@ -7,10 +9,10 @@ import { WickedSheet } from "./wicked-sheet.js";
 export class WickedGMSheet extends WickedSheet {
 
   /** @override */
-	static get defaultOptions() {
-	  return foundry.utils.mergeObject(super.defaultOptions, {
-          classes: ["wicked-ones", "sheet", "gamemaster"],
-          template: "systems/wicked-ones/templates/gm-sheet.html",
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["wicked-ones", "sheet", "gamemaster"],
+      template: "systems/wicked-ones/templates/gm-sheet.html",
       width: 830,
       height: 850,
       tabs: [{ navSelector: ".tabs", contentSelector: ".tab-content", initial: "clocks" }]
@@ -25,11 +27,14 @@ export class WickedGMSheet extends WickedSheet {
     sheetData.editable = this.options.editable;
 
     sheetData.actor = sheetData.data;
-    sheetData.system = sheetData.document.system // project system data so that handlebars has the same name and value paths
-    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description, { async: true });
+    sheetData.system = sheetData.document.system; // project system data so that handlebars has the same name and value paths
+    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description ?? "", {
+      relativeTo: this.object,
+      secrets: this.object.isOwner
+    });
 
-    // Progressivly count up the invasion items
-    let invasions = []
+    // Progressively count up the invasion items
+    let invasions = [];
     let invasion_count = 0;
 
     sheetData.items.forEach(i => {
@@ -50,7 +55,7 @@ export class WickedGMSheet extends WickedSheet {
       if (new_hint == new_hint_loc) {
         break;
       }
-      sheetData.system.phase_hint += "<li>" + new_hint_loc + "</li>"
+      sheetData.system.phase_hint += "<li>" + new_hint_loc + "</li>";
     }
     sheetData.system.phase_hint += "</ul>";
 
@@ -60,22 +65,18 @@ export class WickedGMSheet extends WickedSheet {
 
   /* -------------------------------------------- */
 
-
-  /* -------------------------------------------- */
-
   /** @override */
-	activateListeners(html) {
+  activateListeners(html) {
     super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
 
     // Update Inventory Item
-    // Update Inventory Item
     html.find('.item-open-editor').click(ev => {
       const element = $(ev.currentTarget).parents(".item");
       const item = this.document.items.get(element.data("itemId"));
-      item.sheet.render(true);
+      item?.sheet.render(true);
     });
 
     // Delete Inventory Item
@@ -94,13 +95,11 @@ export class WickedGMSheet extends WickedSheet {
 
   /* -------------------------------------------- */
   /*  Form Submission  (Check relevance)          */
-	/* -------------------------------------------- */
+  /* -------------------------------------------- */
 
   /** @override */
   async _updateObject(event, formData) {
-
-    // Update the Item
-    super._updateObject(event, formData);
+    return super._updateObject(event, formData);
   }
   /* -------------------------------------------- */
 

@@ -18,8 +18,8 @@ export class WickedHelpers {
     // Remove Duplicate items from the array.
     actor.items.forEach(i => {
       if (item._id == i.id) { return; }
-      let has_double = (item.type === i.system.type);
-      if (i.system.name === item.name || (should_be_distinct && has_double)) {
+      let has_double = (item.type === i.type);
+      if (i.name === item.name || (should_be_distinct && has_double)) {
         actor.deleteEmbeddedDocuments("Item", [i.id]);
       }
     });
@@ -79,8 +79,8 @@ export class WickedHelpers {
    */
   static undoItemLogic(item, entity) {
 
-    if ('logic' in item.data && item.system.logic !== '') {
-      let logic = JSON.parse(item.system.logic)
+    if ('logic' in item.system && item.system.logic !== '') {
+      let logic = JSON.parse(item.system.logic);
 
       // Should be an array to support multiple expressions
       if (!Array.isArray(logic)) {
@@ -89,7 +89,7 @@ export class WickedHelpers {
 
       if (logic) {
 
-        var entity_data = entity.data;
+        var entity_data = entity.system;
 
         logic.forEach(expression => {
           // Different logic behav. dep on operator.
@@ -106,7 +106,7 @@ export class WickedHelpers {
             case "attribute_change":
               // Get the array path to take data.
               let default_expression_attribute_path = expression.attribute + '_default';
-              let default_name = default_expression_attribute_path.split(".").reduce((o, i) => o[i], entity_data);
+              let default_name = default_expression_attribute_path.split(".").reduce((o, i) => o?.[i], entity_data);
 
               entity.update({
                 [expression.attribute]: default_name
@@ -126,7 +126,7 @@ export class WickedHelpers {
    */
   static getNestedProperty(obj, property) {
     return property.split('.').reduce((r, e) => {
-        return r[e];
+      return r[e];
     }, obj);
   }
 
@@ -141,7 +141,7 @@ export class WickedHelpers {
     const item_type = a.dataset.itemType;
 
     let data = {
-      name: randomID(),
+      name: foundry.utils.randomID(),
       type: item_type
     };
     return actor.createEmbeddedDocuments("Item", [data]);
@@ -159,7 +159,7 @@ export class WickedHelpers {
     let game_items = [];
     let compendium_items = [];
 
-    game_items = game.items.filter(e => e.type === item_type).map(e => { return e });
+    game_items = game.items.filter(e => e.type === item_type).map(e => { return e; });
 
     let pack = game.packs.find(e => e.metadata.name === item_type);
 
@@ -168,7 +168,7 @@ export class WickedHelpers {
     }
     let compendium_content = await pack.getDocuments();
 
-    compendium_items = compendium_content.map(e => {return e});
+    compendium_items = compendium_content.map(e => { return e; });
 
     list_of_items = game_items.concat(compendium_items);
 
@@ -240,11 +240,11 @@ export class WickedHelpers {
     }
   }
 
-/* -------------------------------------------- */
+  /* -------------------------------------------- */
 
-/**
- * Sorts Special Abilities by External, Primal Calling, Source, Core Status and Alphabet
- */
+  /**
+   * Sorts Special Abilities by External, Primal Calling, Source, Core Status and Alphabet
+   */
   static specialAbilitySortWO(a, b) {
     if (!(a.system.ability_group == "group_ext") && (b.system.ability_group == "group_ext")) {
       return -1;

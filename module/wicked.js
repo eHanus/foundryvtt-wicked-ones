@@ -37,7 +37,7 @@ Hooks.once("init", async function() {
 
   game.wicked = {
     dice: wickedRoll
-  }
+  };
 
   // Define Roll template.
   // CONFIG.Dice.template = "systems/wicked-ones/templates/wicked-roll.html"
@@ -49,19 +49,22 @@ Hooks.once("init", async function() {
   // Register System Settings
   registerSystemSettings();
 
-  // Register sheet application classes
+  // Register sheet application classes (Namespaced for V13/V14+)
+  const { Actors, Items } = foundry.documents.collections;
+  const { ActorSheet, ItemSheet } = foundry.appv1.sheets;
+  
   Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("wicked", WickedActorSheet, { types: ["character"], makeDefault: true });
-  Actors.registerSheet("wicked", WickedMinionSheet, { types: ["minion_pack"], makeDefault: true });
-  Actors.registerSheet("wicked", WickedDungeonSheet, { types: ["dungeon"], makeDefault: true });
-  Actors.registerSheet("wicked", WickedConquestSheet, { types: ["conquest_ua"], makeDefault: true });
-  Actors.registerSheet("wicked", WickedPartySheet, { types: ["party"], makeDefault: true });
-  Actors.registerSheet("wicked", WickedFactionSheet, { types: ["faction"], makeDefault: true });
-  Actors.registerSheet("wicked", WickedFactionUASheet, { types: ["faction_ua"], makeDefault: true });
-  Actors.registerSheet("wicked", WickedGMSheet, { types: ["gm_sheet"], makeDefault: true });
-  Actors.registerSheet("wicked", WickedClockSheet, { types: ["clock"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedActorSheet, { types: ["character"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedMinionSheet, { types: ["minion_pack"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedDungeonSheet, { types: ["dungeon"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedConquestSheet, { types: ["conquest_ua"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedPartySheet, { types: ["party"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedFactionSheet, { types: ["faction"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedFactionUASheet, { types: ["faction_ua"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedGMSheet, { types: ["gm_sheet"], makeDefault: true });
+  Actors.registerSheet("wicked-ones", WickedClockSheet, { types: ["clock"], makeDefault: true });
   Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("wicked", WickedItemSheet, {makeDefault: true});
+  Items.registerSheet("wicked-ones", WickedItemSheet, { makeDefault: true });
   preloadHandlebarsTemplates();
 
 
@@ -77,14 +80,37 @@ Hooks.once("init", async function() {
 
     if (typeof selected !== 'undefined') {
       selected.forEach(selected_value => {
-        if (selected_value !== false) {
-          const escapedValue = RegExp.escape(Handlebars.escapeExpression(selected_value));
+        if (selected_value !== false && selected_value !== null && typeof selected_value !== 'undefined') {
+          const strValue = String(Handlebars.escapeExpression(selected_value));
+          const escapedValue = RegExp.escape ? RegExp.escape(strValue) : strValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const rgx = new RegExp(' value=\"' + escapedValue + '\"');
           html = html.replace(rgx, "$& checked=\"checked\"");
         }
       });
     }
     return html;
+  });
+  
+  // Restore legacy {{#select}} Handlebars helper removed in Foundry V14
+  Handlebars.registerHelper('select', function(selected, options) {
+    const escapedValue = String(Handlebars.escapeExpression(selected));
+    const rgx = new RegExp(' value=["\']' + (RegExp.escape ? RegExp.escape(escapedValue) : escapedValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) + '["\']');
+    const html = options.fn(this);
+    return html.replace(rgx, "$& selected");
+  });
+  
+  // Ifin Helper to check if an element is part of a list
+  Handlebars.registerHelper('ifIn', function (elem, list, options) {
+    if (Array.isArray(list) && list.indexOf(elem) > -1) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
+
+  // Enrich the HTML replace /n with <br>
+  Handlebars.registerHelper('html', (options) => {
+    let text = String(options.hash['text'] ?? "").replace(/\n/g, "<br />");
+    return new Handlebars.SafeString(text);
   });
 
   // Debug Helper
@@ -118,7 +144,7 @@ Hooks.once("init", async function() {
 
     let text = options.hash['text'].replace(/\n/g, "<br />");
 
-    return new Handlebars.SafeString(text);;
+    return new Handlebars.SafeString(text);
   });
 
   // "N Times" loop for handlebars.
@@ -199,7 +225,7 @@ Hooks.once("init", async function() {
     const option = (key, object) => {
       if ( localize ) object.label = game.i18n.localize(object.label);
       let isSelected = selected.includes(key);
-      html += `<option value="${key}" ${isSelected ? "selected" : ""}>${object.label}</option>`
+      html += `<option value="${key}" ${isSelected ? "selected" : ""}>${object.label}</option>`;
     };
 
     // Create the options
@@ -228,11 +254,11 @@ Hooks.once("init", async function() {
     }
 
     // Label for 0
-    html += `<label class="clock-zero-label" for="clock-0-${uniq_id}}"><i class="fab fa-creative-commons-zero nullifier tooltip" data-tooltip="${game.i18n.localize('FITD.TOOLTIP.Reset')}"></i></label>`;
-      html += `<div id="blades-clock-${uniq_id}" class="blades-clock clock-${type} clock-${type}-${current_value}" style="background-image:url('/systems/wicked-ones/styles/assets/progressclocks-webp/transparent-${type}-${current_value}.webp');">`;
+    html += `<label class="clock-zero-label" for="clock-0-${uniq_id}"><i class="fab fa-creative-commons-zero nullifier tooltip" data-tooltip="${game.i18n.localize('FITD.TOOLTIP.Reset')}"></i></label>`;
+    html += `<div id="blades-clock-${uniq_id}" class="blades-clock clock-${type} clock-${type}-${current_value}" style="background-image:url('/systems/wicked-ones/styles/assets/progressclocks-webp/transparent-${type}-${current_value}.webp');">`;
 
     let zero_checked = (parseInt(current_value) === 0) ? 'checked="checked"' : '';
-    html += `<input type="radio" value="0" id="clock-0-${uniq_id}}" name="${parameter_name}" ${zero_checked}>`;
+    html += `<input type="radio" value="0" id="clock-0-${uniq_id}" name="${parameter_name}" ${zero_checked}>`;
 
     for (let i = 1; i <= parseInt(type); i++) {
       let checked = (parseInt(current_value) === i) ? 'checked="checked"' : '';
@@ -250,17 +276,43 @@ Hooks.once("init", async function() {
 /**
  * Once the entire VTT framework is initialized, check to see if we should perform a data migration
  */
-Hooks.once("ready", function() {
+Hooks.once("ready", async function() {
+  if ( !game.user.isGM ) return;
 
-  // Determine whether a system migration is required
+  // 1. Determine whether a system migration is required
   const currentVersion = game.settings.get("wicked-ones", "systemMigrationVersion");
-  const NEEDS_MIGRATION_VERSION = 0.9;
+  const NEEDS_MIGRATION_VERSION = 1.2;
 
   let needMigration = (currentVersion < NEEDS_MIGRATION_VERSION) || (currentVersion === null);
 
-  // Perform the migration
-  if ( needMigration && game.user.isGM ) {
-    migrations.migrateWorld();
+  if ( needMigration ) {
+    await migrations.migrateWorld();
+  }
+
+  // 2. Import the Interface & Sheet Guide once per world
+  const guideImported = game.settings.get("wicked-ones", "guideImported");
+  if ( !guideImported ) {
+    const pack = game.packs.get("wicked-ones.system-documentation");
+    if ( pack ) {
+      const index = await pack.getIndex();
+      const entryIndex = index.find(e => e.name.includes("Interface & Sheet Guide")) ?? index.contents?.[0] ?? Array.from(index)[0];
+
+      if ( entryIndex ) {
+        const doc = await pack.getDocument(entryIndex._id);
+        const docData = game.journal.fromCompendium(doc);
+
+        // Grant Observer permission by default so all players can read the guide immediately
+        docData.ownership = foundry.utils.mergeObject(docData.ownership ?? {}, {
+          default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+        });
+
+        const created = await JournalEntry.create(docData);
+        await game.settings.set("wicked-ones", "guideImported", true);
+
+        // Automatically pop open the guide on its first import
+        created?.sheet?.render(true);
+      }
+    }
   }
 });
 
@@ -294,19 +346,33 @@ Hooks.on("deleteItem", (item, options, userId) => {
   return true;
 });
 
-// renderSceneControls
+// renderSceneControls (Updated for V13/V14 ApplicationV2 SceneControls DOM)
 Hooks.on("renderSceneControls", async (app, html) => {
-  let dice_roller = $('<li class="scene-control" title="Dice Roll"><i class="fas fa-dice"></i></li>');
-  dice_roller.click(function() {
+  const root = html instanceof HTMLElement ? html : html[0];
+  const layersMenu = root?.querySelector("#scene-controls-layers") ?? root?.firstElementChild;
+  if (!layersMenu || layersMenu.querySelector(".wicked-dice-roller")) return;
+
+  const li = document.createElement("li");
+  li.classList.add("wicked-dice-roller");
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "control ui-control layer icon fa-solid fa-dice";
+  button.dataset.tooltip = "Dice Roll";
+  button.setAttribute("aria-label", "Dice Roll");
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
     simpleRollPopup();
   });
 
-  $(html).children().first().append(dice_roller);
-
+  li.appendChild(button);
+  layersMenu.appendChild(li);
 });
 
-Hooks.on("renderChatMessage", (app, html, data) => {
-
+// renderChatMessageHTML (Replaces deprecated jQuery renderChatMessage hook in V13/V14)
+Hooks.on("renderChatMessageHTML", (message, html, context) => {
   // Optionally expand the dice results
-  if (game.settings.get("wicked-ones", "showExpandedRollResults")) html.find(".dice-tooltip").addClass('exp');
+  if (game.settings.get("wicked-ones", "showExpandedRollResults")) {
+    html.querySelectorAll(".dice-tooltip").forEach(el => el.classList.add("exp"));
+  }
 });

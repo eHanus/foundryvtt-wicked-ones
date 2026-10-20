@@ -1,8 +1,12 @@
+import { WickedHelpers } from "./wicked-helpers.js";
+
+const { ActorSheet } = foundry.appv1.sheets;
+const { Dialog } = foundry.appv1.api;
+
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-
 export class WickedSheet extends ActorSheet {
 
   /* -------------------------------------------- */
@@ -51,8 +55,8 @@ export class WickedSheet extends ActorSheet {
     }
 
     event.preventDefault();
-    const item_type = $(event.currentTarget).data("itemType")
-    const distinct = $(event.currentTarget).data("distinct")
+    const item_type = $(event.currentTarget).data("itemType");
+    const distinct = $(event.currentTarget).data("distinct");
     let input_type = "checkbox";
 
     if (typeof distinct !== "undefined") {
@@ -71,11 +75,11 @@ export class WickedSheet extends ActorSheet {
           items.sort(WickedHelpers.minionUpgradeSort);
           // Remove non-applicable upgrades for Minion Sheets
           if (this.object.system.mp_type == "normal") {
-            items = items.filter(function (item, index, arr) {
+            items = items.filter(function (item) {
               return item.system.is_for_wo;
             });
           } else if (this.object.system.mp_type == "undead") {
-            items = items.filter(function (item, index, arr) {
+            items = items.filter(function (item) {
               return item.system.is_for_ua;
             });
           }
@@ -83,11 +87,11 @@ export class WickedSheet extends ActorSheet {
         case "wickedimpulse":
           // Remove non-applicable upgrades for Minion Sheets
           if (this.object.system.is_awakened) {
-            items = items.filter(function (item, index, arr) {
+            items = items.filter(function (item) {
               return item.system.is_for_ua;
             });
           } else {
-            items = items.filter(function (item, index, arr) {
+            items = items.filter(function (item) {
               return !(item.system.is_for_ua);
             });
           }
@@ -95,11 +99,11 @@ export class WickedSheet extends ActorSheet {
         case "minionimpulse":
           // Remove non-applicable upgrades for Minion Sheets
           if (this.object.system.mp_type == "undead") {
-            items = items.filter(function (item, index, arr) {
+            items = items.filter(function (item) {
               return item.system.is_for_ua;
             });
           } else {
-            items = items.filter(function (item, index, arr) {
+            items = items.filter(function (item) {
               return !(item.system.is_for_ua);
             });
           }
@@ -107,7 +111,7 @@ export class WickedSheet extends ActorSheet {
         case "monster_race":
           // Remove primals for Minion Sheets
           if (this.object.type == "minion_pack") {
-            items = items.filter(function (item, index, arr) {
+            items = items.filter(function (item) {
               return !(item.system.primal);
             });
           }
@@ -138,35 +142,35 @@ export class WickedSheet extends ActorSheet {
 
         case "conquest_ability":
           if (typeof e.system.domain !== "undefined") {
-            itemPrefix += `(${game.i18n.localize(CONFIG.WO.ua_conquest_domains[e.system.domain])}): `
+            itemPrefix += `(${game.i18n.localize(CONFIG.WO.ua_conquest_domains[e.system.domain])}): `;
           }
           if (e.system.is_core) {
-            itemSuffix += ` (` + game.i18n.localize(`FITD.Core`) + `)`
+            itemSuffix += ` (` + game.i18n.localize(`FITD.Core`) + `)`;
           }
           break;
 
         case "minion_upgrade":
           if (e.system.upgrade_type == 'external') {
-            itemSuffix += ` (` + game.i18n.localize(`FITD.External`) + `)`
+            itemSuffix += ` (` + game.i18n.localize(`FITD.External`) + `)`;
           } else if (e.system.upgrade_type == 'path') {
-            itemSuffix += ` (` + game.i18n.localize(`FITD.MagicPath`) + `)`
+            itemSuffix += ` (` + game.i18n.localize(`FITD.MagicPath`) + `)`;
           }
           break;
 
         case "monster_race":
           if (e.system.primal) {
-            itemSuffix += ` (` + game.i18n.localize(`FITD.Primal`) + `)`
+            itemSuffix += ` (` + game.i18n.localize(`FITD.Primal`) + `)`;
           }
           break;
 
         case "specialability":
           if (typeof e.system.source !== "undefined") {
-            itemPrefix += `(${e.system.source}): `
+            itemPrefix += `(${e.system.source}): `;
           }
           if (e.system.ability_group == 'group_core') {
-            itemSuffix += ` (` + game.i18n.localize(`FITD.Core`) + `)`
+            itemSuffix += ` (` + game.i18n.localize(`FITD.Core`) + `)`;
           } else if (e.system.ability_group == 'group_ext') {
-            itemSuffix += ` (` + game.i18n.localize(`FITD.External`) + `)`
+            itemSuffix += ` (` + game.i18n.localize(`FITD.External`) + `)`;
           }
           if (itemTooltip == "") {
             itemTooltip = game.i18n.localize('FITD.ItemIsOfType') + ' ' + game.i18n.localize(CONFIG.WO.special_ability_types[e.system.ability_type]);
@@ -175,7 +179,7 @@ export class WickedSheet extends ActorSheet {
 
         case "tier3room":
           if (typeof e.system.theme !== "undefined") {
-            itemPrefix += `(${e.system.theme}): `
+            itemPrefix += `(${e.system.theme}): `;
           }
           break;
 
@@ -209,7 +213,7 @@ export class WickedSheet extends ActorSheet {
 
     let options = {
       id: "add-items-popup"
-    }
+    };
 
     let dialog = new Dialog({
       title: `${game.i18n.localize('Add')} ${game.i18n.localize(title)}`,
@@ -218,7 +222,7 @@ export class WickedSheet extends ActorSheet {
         one: {
           icon: '<i class="fas fa-check"></i>',
           label: game.i18n.localize('Add'),
-          callback: () => this.addItemsToSheet(item_type, $(document).find('#items-to-add'))
+          callback: (dialogHtml) => this.addItemsToSheet(item_type, dialogHtml.find('#items-to-add'))
         },
         two: {
           icon: '<i class="fas fa-times"></i>',
@@ -240,10 +244,12 @@ export class WickedSheet extends ActorSheet {
     let items = await WickedHelpers.getAllItemsByType(item_type, game);
     let items_to_add = [];
     el.find("input:checked").each(function () {
-
-      items_to_add.push(items.find(e => e._id === $(this).val()));
+      const found = items.find(e => e._id === $(this).val());
+      if (found) items_to_add.push(found.toObject());
     });
-    this.document.createEmbeddedDocuments("Item", items_to_add);
+    if (items_to_add.length > 0) {
+      return this.document.createEmbeddedDocuments("Item", items_to_add);
+    }
   }
   /* -------------------------------------------- */
 
@@ -253,7 +259,7 @@ export class WickedSheet extends ActorSheet {
    */
   async _onRollAttributeDieClick(event) {
 
-    let target = $(event.currentTarget)
+    let target = $(event.currentTarget);
     const attribute_name = target.data("rollAttribute");
     const attribute_value = target.data("rollValue");
     const roll_type = target.data("rollType");
@@ -331,31 +337,31 @@ export class WickedSheet extends ActorSheet {
     return item.update({ ['system.' + propertyToSet]: event.target.value });
   }
 
-/* -------------------------------------------- */
+  /* -------------------------------------------- */
 
   /**
-    * Change the class of the doomseeker when the mouse enters the image map area
-    */
+   * Change the class of the doomseeker when the mouse enters the image map area
+   */
   async _onDSMouseOver(event) {
     event.currentTarget.parentNode.previousElementSibling.classList.add('hovered');
     return;
   }
 
-/* -------------------------------------------- */
+  /* -------------------------------------------- */
 
   /**
-    * Change the class of the doomseeker when the mouse leaves the image map area
-    */
+   * Change the class of the doomseeker when the mouse leaves the image map area
+   */
   async _onDSMouseOut(event) {
     event.currentTarget.parentNode.previousElementSibling.classList.remove('hovered');
     return;
   }
 
-/* -------------------------------------------- */
+  /* -------------------------------------------- */
 
   /**
-    * Make the progress clocks in the frontend items clickable
-    */
+   * Make the progress clocks in the frontend items clickable
+   */
   async _onProjectClockClick(event) {
     event.preventDefault();
     const itemId = event.currentTarget.closest(".item").dataset.itemId;
@@ -370,13 +376,12 @@ export class WickedSheet extends ActorSheet {
     const centerY = clockRect.y + clockRect.height / 2;
     const offsetX = event.clientX - centerX;
     const offsetY = centerY - event.clientY;
-    const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY)
+    const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
     if (distance > clockRect.width / 2) {
       // Return without action outside the circle
       return;
     }
     const slope = (offsetX >= 0 ? Math.atan2(offsetX, offsetY) : Math.atan2(offsetX, offsetY) + 2 * Math.PI);
-    //const segmentArc = Math.PI * 2 / item.data.data.clock_size;
     const segmentArc = Math.PI * 2 / item.system.clock_size;
     const clickedSegment = Math.ceil(slope / segmentArc);
 
@@ -394,8 +399,8 @@ export class WickedSheet extends ActorSheet {
   async _onMinionOpenClick(event) {
 
     event.preventDefault();
-    // const actor = game.actors.get(this.document.data.data.minionpack);
     const actor = game.actors.get(this.document.system.minionpack);
+    if (!actor) return;
     const sheet = actor.sheet;
 
     // If the sheet is already rendered:
@@ -425,29 +430,25 @@ export class WickedSheet extends ActorSheet {
       candle.value -= 1;
     }
     if (candle.value > candle.max) {
-      candle.value = candle.max
+      candle.value = candle.max;
     }
     else if (candle.value < candle.min) {
-      candle.value = candle.min
+      candle.value = candle.min;
     }
 
     // Update Data
     this.document.update({ ['system.candle_progress.value']: candle.value });
-
-    // Submit click
-    // pressed_button.click();
   }
 
-  async _onBasicRollClick(event){
-    let target = $(event.currentTarget)
+  async _onBasicRollClick(event) {
+    let target = $(event.currentTarget);
     const roll_type = target.data("rollType");
     const roll_default = target.data("rollDefault") ?? 2;
     const roll_max = target.data("rollMax") ?? 4;
 
     this.document.rollBasicPopup(roll_type, roll_default, roll_max);
   }
-  
-  /* -------------------------------------------- */
 
+  /* -------------------------------------------- */
 
 }

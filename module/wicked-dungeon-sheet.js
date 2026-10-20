@@ -1,5 +1,6 @@
-
 import { WickedSheet } from "./wicked-sheet.js";
+
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
 
 /**
  * @extends {WickedSheet}
@@ -7,13 +8,13 @@ import { WickedSheet } from "./wicked-sheet.js";
 export class WickedDungeonSheet extends WickedSheet {
 
   /** @override */
-	static get defaultOptions() {
-	  return foundry.utils.mergeObject(super.defaultOptions, {
-          classes: ["wicked-ones", "sheet", "actor"],
-          template: "systems/wicked-ones/templates/dungeon-sheet.html",
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["wicked-ones", "sheet", "actor"],
+      template: "systems/wicked-ones/templates/dungeon-sheet.html",
       width: 600,
       height: 850,
-      tabs: [{ navSelector: ".tabs", contentSelector: ".tab-content", initial: "rooms"}]
+      tabs: [{ navSelector: ".tabs", contentSelector: ".tab-content", initial: "rooms" }]
     });
   }
 
@@ -25,10 +26,13 @@ export class WickedDungeonSheet extends WickedSheet {
     sheetData.editable = this.options.editable;
 
     sheetData.actor = sheetData.data;
-    sheetData.system = sheetData.document.system // project system data so that handlebars has the same name and value paths
-    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description, { async: true });
+    sheetData.system = sheetData.document.system; // project system data so that handlebars has the same name and value paths
+    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description ?? "", {
+      relativeTo: this.object,
+      secrets: this.object.isOwner
+    });
 
-		// Add flexibility flag on mismatched theme
+    // Add flexibility flag on mismatched theme
     let theme = "";
     sheetData.items.forEach(e => {
       if (e.type == "dungeon_theme") {
@@ -45,15 +49,13 @@ export class WickedDungeonSheet extends WickedSheet {
       }
     });
 
-    // Override Code for updating the sheet goes here
-
     return sheetData;
   }
 
   /* -------------------------------------------- */
 
   /** @override */
-	activateListeners(html) {
+  activateListeners(html) {
     super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
@@ -63,7 +65,7 @@ export class WickedDungeonSheet extends WickedSheet {
     html.find('.item-open-editor').click(ev => {
       const element = $(ev.currentTarget).parents(".item");
       const item = this.document.items.get(element.data("itemId"));
-      item.sheet.render(true);
+      item?.sheet.render(true);
     });
 
     // Delete Inventory Item
@@ -76,16 +78,14 @@ export class WickedDungeonSheet extends WickedSheet {
   }
 
   /* -------------------------------------------- */
-  /*  Form Submission  (Check relevance)          */
-	/* -------------------------------------------- */
+  /*  Form Submission                             */
+  /* -------------------------------------------- */
 
   /** @override */
   async _updateObject(event, formData) {
+    await super._updateObject(event, formData);
 
-    // Update the Item
-    super._updateObject(event, formData);
-
-    if (event.target && event.target.name === "data.tier") {
+    if (event.target && (event.target.name === "system.tier" || event.target.name === "data.tier")) {
       this.render(true);
     }
   }

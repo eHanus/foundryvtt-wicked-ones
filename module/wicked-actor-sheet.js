@@ -1,5 +1,6 @@
-
 import { WickedSheet } from "./wicked-sheet.js";
+
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -8,13 +9,13 @@ import { WickedSheet } from "./wicked-sheet.js";
 export class WickedActorSheet extends WickedSheet {
 
   /** @override */
-	static get defaultOptions() {
-	  return foundry.utils.mergeObject(super.defaultOptions, {
-          classes: ["wicked-ones", "sheet", "actor"],
-          template: "systems/wicked-ones/templates/actor-sheet.html",
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["wicked-ones", "sheet", "actor"],
+      template: "systems/wicked-ones/templates/actor-sheet.html",
       width: 820,
       height: 970,
-      tabs: [{navSelector: ".tabs", contentSelector: ".tab-content", initial: "abilities"}]
+      tabs: [{ navSelector: ".tabs", contentSelector: ".tab-content", initial: "abilities" }]
     });
   }
 
@@ -26,8 +27,11 @@ export class WickedActorSheet extends WickedSheet {
     sheetData.editable = this.options.editable;
 
     sheetData.actor = sheetData.data;
-    sheetData.system = sheetData.document.system // project system data so that handlebars has the same name and value paths
-    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description, { async: true });
+    sheetData.system = sheetData.document.system; // project system data so that handlebars has the same name and value paths
+    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description ?? "", {
+      relativeTo: this.object,
+      secrets: this.object.isOwner
+    });
 
     // Change the action ratings on display and flags depending on the sheet type
     sheetData.system.is_awakened = false;
@@ -69,7 +73,7 @@ export class WickedActorSheet extends WickedSheet {
       delete sheetData.system.attributes.guts.skills.invoke;
     }
 
-    // check if Goldmonger and set Gold to bot be tracked
+    // check if Goldmonger and set Gold to not be tracked
     if (sheetData.system.primal_monster_type == game.i18n.localize("FITD.GAME_LOGIC.Goldmonger")) {
       sheetData.system.has_gold = false;
     }
@@ -92,7 +96,7 @@ export class WickedActorSheet extends WickedSheet {
   /* -------------------------------------------- */
 
   /** @override */
-	activateListeners(html) {
+  activateListeners(html) {
     super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
@@ -102,7 +106,7 @@ export class WickedActorSheet extends WickedSheet {
     html.find('.item-open-editor').click(ev => {
       const element = $(ev.currentTarget).parents(".item");
       const item = this.actor.items.get(element.data("itemId"));
-			item.sheet.render(true);
+      item?.sheet.render(true);
     });
 
     // Delete Inventory Item

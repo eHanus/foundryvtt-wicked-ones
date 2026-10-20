@@ -23,10 +23,6 @@ form.dungeon-sheet {
             padding: 0px;
         }
 
-        td:nth-of-type(2) {
-            background-color: $mud;
-        }
-
         tr:hover {
             .item-add-popup {
                 transition: opacity 0.5s;

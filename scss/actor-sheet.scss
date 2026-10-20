@@ -401,9 +401,10 @@ form.wicked-one-sheet {
                     margin-top: 30px;
 
                     img {
+						display: inline-block;
                         width: 200px;
                         height: 200px;
-                        margin: 0px;
+                        margin: 0 auto;
                         border-style: none;
                         position: relative;
                         transition: filter 0.1s;
@@ -451,6 +452,8 @@ form.wicked-one-sheet {
                 text-align: center;
 
                 img {
+					display: inline-block;
+					margin: 0 auto;
                     max-height: 120px;
                     max-width: 100px;
                     object-fit: contain;
@@ -686,18 +689,17 @@ form.wicked-one-sheet {
     // Duties Table
     #duties-table {
         tr {
-            td:nth-of-type(1),
-            td:nth-of-type(2) {
+            td:nth-of-type(1) {
                 text-align: center;
                 width: 5%;
             }
 
-            td:nth-of-type(3) {
+            td:nth-of-type(2) {
                 text-align: center;
                 width: 12%;
             }
 
-            td:nth-of-type(5) {
+            td:nth-of-type(4) {
                 width: 20px;
             }
         }
@@ -721,6 +723,7 @@ form.wicked-one-sheet {
 	grid-column-gap: 20px;
 	font-family: Piedra;
 	text-transform: uppercase;
+	color: black;
 
 	& div:first-child {
 		color: $mud;

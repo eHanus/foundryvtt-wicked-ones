@@ -3,15 +3,18 @@
 @import 'fonts.scss';
 @import 'mixin.scss';
 
-#chat {
+#chat,
+#chat-notifications,
+.chat-log {
 
     .chat-label {
         background-color: $almost_black;
         color: $almost_white;
         font-size: 24px;
         text-align: center;
-        padding: 0px 5px;
-        height: 36px !important;
+        padding: 2px 5px;
+        min-height: 36px;
+        height: auto !important;
         text-transform: capitalize;
     }
 
@@ -21,7 +24,8 @@
         font-size: small;
         text-align: center;
         padding: 3px 5px;
-        height: 26px !important;
+        min-height: 26px;
+        height: auto !important;
     }
 
     .chat-message {
@@ -42,11 +46,13 @@
                 font-family: Piedra;
                 font-weight: normal;
                 font-size: 15px;
+                color: $almost_black;
             }
 
             .message-metadata {
                 text-align: right;
                 font-weight: 700;
+                color: $almost_black;
             }
 
         }
@@ -55,6 +61,7 @@
             font-family: Bitter;
             font-size: inherit;
             font-weight: 600;
+            color: $almost_black;
         }
 
     }
@@ -71,9 +78,23 @@
         color: white;
         background-color: $mud;
         margin: 0;
+        padding: 3px 6px;
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+         gap: 6px;
+        min-height: 32px;
+        height: auto !important;
         border-top-left-radius: 5px;
         text-shadow: 2px 2px 0 #313131;
+
+        .black-label,
+        .chat-label {
+            height: auto !important;
+            line-height: 1.15;
+            text-align: left;
+            padding: 2px 4px;
+        }
     }
 
     .label-stripe-chat-small {
@@ -81,9 +102,9 @@
         color: $almost_black;
         background-color: #bdb7ab;
         margin-bottom: 0px;
-        // display: flex;
         text-transform: capitalize;
         font-size: 16px;
+        height: auto !important;
     }
 
     .wicked-die-tooltip {
@@ -91,13 +112,15 @@
         &.dice-roll {
             display: block;
 
-            .dice-tooltip.exp{
+            .dice-tooltip.exp {
                 display: block;
             }
 
             .dice-rolls {
                 list-style: none;
                 display: flex;
+                flex-wrap: wrap;
+                gap: 2px;
             }
 
             .zero-hint {
@@ -112,14 +135,17 @@
             text-transform: uppercase;
             color: white;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: right;
             font-family: Bitter;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 11px;
+            line-height: 1.15;
             margin: 0;
             margin-left: auto;
+            flex-shrink: 0;
             border-top-left-radius: 5px;
-            flex: 1 1 min-content;
-            max-width: max-content;
         }
 
         .die {
@@ -129,7 +155,9 @@
             font-weight: normal;
             font-size: 24px;
             text-align: center;
-            height: 30px;
+            min-height: 30px;
+            height: auto;
+            padding: 2px 0;
             border-bottom: 3px solid;
             border-bottom-right-radius: 5px;
             border-bottom-left-radius: 5px;
@@ -190,7 +218,6 @@
         font-weight: 600;
     }
 
-    // TO DO: Check if used
     .dice-tooltip .dice-rolls .roll.d6 {
         font-family: Signika;
     }
@@ -205,8 +232,12 @@
 }
 
 
-// Game Chat Background
-#chat-form textarea {
+// Game Chat Background (Supports both legacy #chat-form and V13/V14 .chat-form)
+#chat-form textarea,
+.chat-form textarea#chat-message {
     background: url(../styles/assets/images/background-light.webp) repeat;
     background-size: 300px;
+    color: $almost_black;
+    font-family: Bitter, sans-serif;
+    font-weight: 600;
 }

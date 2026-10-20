@@ -7,11 +7,10 @@ export const preloadHandlebarsTemplates = async function() {
 
   // Define template paths to load
   const templatePaths = [
-
     // Actor Sheet Partials
     "systems/wicked-ones/templates/parts/attributes.html",
   ];
 
-  // Load the template parts
-  return loadTemplates(templatePaths);
+  // Load the template parts (Namespaced for V13/V14+)
+  return foundry.applications.handlebars.loadTemplates(templatePaths);
 };

@@ -1,5 +1,6 @@
-
 import { WickedSheet } from "./wicked-sheet.js";
+
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -8,9 +9,9 @@ import { WickedSheet } from "./wicked-sheet.js";
 export class WickedMinionSheet extends WickedSheet {
 
   /** @override */
-	static get defaultOptions() {
-	  return foundry.utils.mergeObject(super.defaultOptions, {
-          classes: ["wicked-ones", "sheet", "actor"],
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["wicked-ones", "sheet", "actor"],
       template: "systems/wicked-ones/templates/minion-sheet.html",
       width: 650,
       height: 770,
@@ -26,8 +27,11 @@ export class WickedMinionSheet extends WickedSheet {
     sheetData.editable = this.options.editable;
 
     sheetData.actor = sheetData.data;
-    sheetData.system = sheetData.document.system // project system data so that handlebars has the same name and value paths
-    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description, { async: true });
+    sheetData.system = sheetData.document.system; // project system data so that handlebars has the same name and value paths
+    sheetData.notes = await TextEditor.enrichHTML(this.object.system.description ?? "", {
+      relativeTo: this.object,
+      secrets: this.object.isOwner
+    });
 
     // Change the action ratings on display and flags depending on the sheet type
     sheetData.system.is_undead = false;
@@ -61,7 +65,7 @@ export class WickedMinionSheet extends WickedSheet {
   /* -------------------------------------------- */
 
   /** @override */
-	activateListeners(html) {
+  activateListeners(html) {
     super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
@@ -71,7 +75,7 @@ export class WickedMinionSheet extends WickedSheet {
     html.find('.item-open-editor').click(ev => {
       const element = $(ev.currentTarget).parents(".item");
       const item = this.document.items.get(element.data("itemId"));
-      item.sheet.render(true);
+      item?.sheet.render(true);
     });
 
     // Delete Inventory Item

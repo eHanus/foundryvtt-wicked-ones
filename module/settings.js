@@ -22,4 +22,17 @@ export const registerSystemSettings = function() {
     type: Boolean,
     default: true
   });
+  
+  /**
+   * Track whether the Interface & Sheet Guide has been imported into this world
+   */
+  game.settings.register("wicked-ones", "guideImported", {
+    name: "Interface Guide Imported",
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: false
+  });
 };
+
+

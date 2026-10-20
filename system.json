@@ -346,7 +346,16 @@
         "ASSISTANT": "OWNER"
       },
       "flags": {}
-    }
+    },
+	{
+	  "name": "system-documentation",
+	  "label": "System Documentation",
+	  "system": "wicked-ones",
+	  "path": "packs/system-documentation",
+	  "type": "JournalEntry",
+	  "private": false,
+	  "flags": {}
+	}
   ],
   "compatibility": {
         "minimum": "13",

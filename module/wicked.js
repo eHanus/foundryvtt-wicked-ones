@@ -276,16 +276,43 @@ Hooks.once("init", async function() {
 /**
  * Once the entire VTT framework is initialized, check to see if we should perform a data migration
  */
-Hooks.once("ready", function() {
-  // Determine whether a system migration is required
+Hooks.once("ready", async function() {
+  if ( !game.user.isGM ) return;
+
+  // 1. Determine whether a system migration is required
   const currentVersion = game.settings.get("wicked-ones", "systemMigrationVersion");
   const NEEDS_MIGRATION_VERSION = 1.2;
 
   let needMigration = (currentVersion < NEEDS_MIGRATION_VERSION) || (currentVersion === null);
 
-  // Perform the migration
-  if ( needMigration && game.user.isGM ) {
-    migrations.migrateWorld();
+  if ( needMigration ) {
+    await migrations.migrateWorld();
+  }
+
+  // 2. Import the Interface & Sheet Guide once per world
+  const guideImported = game.settings.get("wicked-ones", "guideImported");
+  if ( !guideImported ) {
+    const pack = game.packs.get("wicked-ones.system-documentation");
+    if ( pack ) {
+      const index = await pack.getIndex();
+      const entryIndex = index.find(e => e.name.includes("Interface & Sheet Guide")) ?? index.contents?.[0] ?? Array.from(index)[0];
+
+      if ( entryIndex ) {
+        const doc = await pack.getDocument(entryIndex._id);
+        const docData = game.journal.fromCompendium(doc);
+
+        // Grant Observer permission by default so all players can read the guide immediately
+        docData.ownership = foundry.utils.mergeObject(docData.ownership ?? {}, {
+          default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+        });
+
+        const created = await JournalEntry.create(docData);
+        await game.settings.set("wicked-ones", "guideImported", true);
+
+        // Automatically pop open the guide on its first import
+        created?.sheet?.render(true);
+      }
+    }
   }
 });
 
